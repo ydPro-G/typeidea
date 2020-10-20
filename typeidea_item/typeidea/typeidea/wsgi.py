@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "typeidea.settings")
+profile = os.environ.get('TYPEIDEA_PROFILE','develop') # 读取系统环境变量中的TYPEIDEA_PROFILE来控制Django加载不同的settings文件
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "typeidea.settings.%s" % profile)
 
 application = get_wsgi_application()
