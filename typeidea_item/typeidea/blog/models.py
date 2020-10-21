@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
+# 博客内容相关的模型
 
 # 分类
 class Category(models.Model):
@@ -14,6 +15,7 @@ class Category(models.Model):
 
     name = models.CharField(max_length=50,verbose_name='名称')
     # choices一个元组 一般是下拉框，方便页面获取字典值
+    # 默认正常，下拉列表显示状态栏
     status = models.PositiveIntegerField(default=STATUS_NORMAL,choices=STATUS_ITEMS,verbose_name='状态')
     is_nav = models.BooleanField(default=False,verbose_name='是否为导航')
     owner = models.ForeignKey(User,verbose_name='作者')
@@ -48,9 +50,9 @@ class Post(models.Model):
     STATUS_DELETE = 0
     STATUS_DRAFT = 2
     STATUS_ITEMS = (
-        (STATUS_NORMAL,'正常')
-        (STATUS_DELETE,'删除')
-        (STATUS_DRAFT,'草稿')
+        (STATUS_NORMAL,'正常'),
+        (STATUS_DELETE,'删除'),
+        (STATUS_DRAFT,'草稿'),
     )
 
     title = models.CharField(max_length=255,verbose_name='标题')
