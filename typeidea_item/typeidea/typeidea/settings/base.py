@@ -29,8 +29,13 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+# 根据APP顺序查找对应资源
 
 INSTALLED_APPS = [
+    'blog', # 文章，标签，分类
+    'config', # 友链，链接
+    'comment', # 评论
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
