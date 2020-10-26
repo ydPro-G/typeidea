@@ -50,6 +50,9 @@ class Tag(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = '标签'
 
+    def __str__(self):
+        return self.name
+
 # 文章
 class Post(models.Model):
     STATUS_NORMAL = 1

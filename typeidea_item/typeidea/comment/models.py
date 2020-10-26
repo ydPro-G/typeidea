@@ -23,5 +23,8 @@ class Comment(models.Model):
     # 每个model中都定义一个Meta类属性，作用是配置Model属性
     class Meta:
         verbose_name = verbose_name_plural = '评论'
+    
+    def __str__(self):
+        return self.target
 
 

@@ -29,9 +29,17 @@
 
 
 ### 配置admin页面
+####  通过继承admin.ModelAdmin,就能实现对这个Model的增删改查页面的配置
 1. 创建blog的管理后台
+
 2. [使用装饰器编写分类，标签，文章的admin配置](typeidea_item\typeidea\blog\admin.py)
-3. 通过继承admin.ModelAdmin,就能实现对这个Model的增删改查页面的配置
+
+3. [创建comment的配置文件](typeidea_item\typeidea\comment\admin.py)  
+
+4. [创建config模型的admin配置文件](typeidea_item\typeidea\config\admin.py)
+
+5. 根据需求定制admin:1.数据批量展示和操作的列表页2.数据增加或修改的页面
+    + 1.自定义列表筛选器（list_filter）：可以看到所有作者，右侧筛选器也可以看到所有分类——1.筛选器只显示当前用户分类
 
 
 

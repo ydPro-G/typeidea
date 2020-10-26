@@ -43,6 +43,29 @@ class TagAdmin(admin.ModelAdmin):
         obj.owner = request.user
         return super(TagAdmin,self).save_model(request,obj,form,change)
 
+# 自定义过滤器，只显示当前用户分类
+class CategoryOwnerFilter(admin.SimpleListFilter): # 继承admin模块SimplListFilter类来实现自定义过滤器
+    """自定义筛选器只显示当前用户分类"""
+
+    # 显示标题
+    title = '分类过滤器'
+    #查询时URL参数的名字 查询id为1，?owner_category=1
+    parameter_name = 'owner_category'
+    
+    # 返回要展示的内容和查询用的id
+    def lookups(self, request, model_admin):
+        return Category.objects.filter(owner=request.owner).values_list('id'm 'name')
+    
+    # 根据URL Query的内容返回列表页的数据
+    def queryset(self, request, queryset):
+        category_id = self.value()
+        if category_id:
+            return queryset.filter(category_id=self.value())
+        return queryset
+
+
+
+
 
 
 
@@ -51,7 +74,7 @@ class PostAdmin(admin.ModelAdmin):
     # 列表页面展示字段
     list_display = [
         'title', 'category', 'status',
-        'created_time','operator'
+        'created_time', 'owner', 'operator'
     ]
 
     # 配置可作为链接的字段
@@ -70,10 +93,10 @@ class PostAdmin(admin.ModelAdmin):
     # 保存，编辑，编辑并新建按钮是否在顶部展示
     save_on_top = True
 
-    # 在页面显示的字段
+    # 添加页面显示的字段
     fields = (
-        ('category', 'title'),# 元组显示
-        'desc',
+        ('category', 'title'),# category title 一行
+        'desc', # desc 一行
         'status',
         'content',
         'tag',
@@ -88,7 +111,7 @@ class PostAdmin(admin.ModelAdmin):
         )
     operator.short_description = '操作' # 展示文案
 
+    # 默认保存登录作者信息
     def save_model(self, request, obj, form, change):
         obj.owner = request.user 
         return super(PostAdmin, self).save_model(request, obj, form, change)
-
