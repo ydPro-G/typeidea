@@ -29,7 +29,9 @@
 
 
 ### 配置admin页面
-1. 
+1. 创建blog的管理后台
+2. [使用装饰器编写分类，标签，文章的admin配置](typeidea_item\typeidea\blog\admin.py)
+3. 通过继承admin.ModelAdmin,就能实现对这个Model的增删改查页面的配置
 
 
 

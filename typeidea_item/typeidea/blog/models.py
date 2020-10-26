@@ -25,6 +25,12 @@ class Category(models.Model):
     # 配置展示名称为分类
     class Meta:
         verbose_name = verbose_name_plural = '分类'
+     
+    # 动作返回self.name
+    def __str__(self):
+        return self.name
+
+    
 
 # 标签
 class Tag(models.Model):

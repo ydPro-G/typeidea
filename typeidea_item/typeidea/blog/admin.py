@@ -8,7 +8,7 @@ from .models import Post, Category, Tag
 # Category,Post,Tag对应的admin配置    
 
 
-# 注册装饰器
+# 通过装饰器注册模型
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     # admin页面列表展示
@@ -16,7 +16,7 @@ class CategoryAdmin(admin.ModelAdmin):
     # 添加需要显示的设置字段
     fields = ('name','status','is_nav')
 
-    # save_model判断保存owner信息，保存数据到数据库
+    # 保存数据之前，把owner这个字段设定为当前的登录用户，未登录的request.user拿到的匿名用户对象
     # obj：当前要保存的对象 form页面提交过来的表单之后的对象 change:标志本次保存的数据是新增还是更新
     def save_model(self, request, obj, form, change):
         # 给obj.owner赋值，自动设置owner，request.user就是当前已登录的用户
@@ -70,8 +70,9 @@ class PostAdmin(admin.ModelAdmin):
     # 保存，编辑，编辑并新建按钮是否在顶部展示
     save_on_top = True
 
+    # 在页面显示的字段
     fields = (
-        ('category', 'title'),
+        ('category', 'title'),# 元组显示
         'desc',
         'status',
         'content',
