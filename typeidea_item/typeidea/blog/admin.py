@@ -3,17 +3,27 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from .models import Post, Category, Tag
+from .adminforms import PostAdminForm
+from typeidea.custom_site import custom_site # 引入typeidea文件的custom_site文件和类
 
 # Register your models here.
 # Category,Post,Tag对应的admin配置    
 
+# 在分类页面增加一个编辑/新增文章的按钮
+class PostInline(admin.TabularInline): # StackedInline 样式不同
+    fields = ('title', 'desc')
+    extra = 1 # 控制额外多几个
+    model = Post
+
 
 # 通过装饰器注册模型
-@admin.register(Category)
+@admin.register(Category, site = custom_site)
 class CategoryAdmin(admin.ModelAdmin):
+    # 添加一行
+    inlines = [PostInline, ]
     # admin页面列表展示
     list_display = ('name','status','is_nav','created_time','post_count')
-    # 添加需要显示的设置字段
+    # 限定要展示的字段，配置展示字段的顺序
     fields = ('name','status','is_nav')
 
     # 保存数据之前，把owner这个字段设定为当前的登录用户，未登录的request.user拿到的匿名用户对象
@@ -34,10 +44,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(Tag)
+@admin.register(Tag, site = custom_site)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name','status','created_time')
     fields = ('name','status')
+
 
     def save_model(self, request, obj, form, change):
         obj.owner = request.user
@@ -54,7 +65,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter): # 继承admin模块SimplListF
     
     # 返回要展示的内容和查询用的id
     def lookups(self, request, model_admin):
-        return Category.objects.filter(owner=request.owner).values_list('id', 'name')
+        return Category.objects.filter(owner=request.user).values_list('id', 'name')
     
     # 根据URL Query的内容返回列表页的数据,举例-最后Query是？owner_category=1,那么这里拿到的self.value()就是1，根据1来过滤QuerySet
     def queryset(self, request, queryset):
@@ -69,9 +80,11 @@ class CategoryOwnerFilter(admin.SimpleListFilter): # 继承admin模块SimplListF
 
 
 
-
-@admin.register(Post)
+# 将site更换为我们自定义的site
+@admin.register(Post, site = custom_site) 
 class PostAdmin(admin.ModelAdmin):
+    #  自定义Form，修改status的输入框为文本框(Textarea)
+    form = PostAdminForm
     # 列表页面展示字段
     list_display = [
         'title', 'category', 'status',
@@ -108,7 +121,8 @@ class PostAdmin(admin.ModelAdmin):
         # 返回经过format_html函数处理
         return format_html(
             '<a href="{}">编辑</a>',
-            reverse('admin:blog_post_change',args=(obj.id,)) # 根据名称解析处URL地址
+            # 用reverse方式获取后台地址时，将admin更换为cus_admin
+            reverse('cus_admin:bolg_post_change',args=(obj.id,)) # 根据名称解析处URL地址
         )
     operator.short_description = '操作' # 展示文案
 
@@ -123,7 +137,6 @@ class PostAdmin(admin.ModelAdmin):
         qs = super(PostAdmin, self).get_queryset(request)
         # 返回作者=登录用户
         return qs.filter(owner=request.user)
-
     #  def get_queryset(self, request):
     #     """
     #     返回管理站点可编辑的所有模型实例查询集，由变更列表视图使用
@@ -131,8 +144,18 @@ class PostAdmin(admin.ModelAdmin):
     #     admin site. This is used by changelist_view.
     #     """
     #     qs = self.model._default_manager.get_queryset()
-    #     # TODO: this should be handled by some parameter to the ChangeList.
+    #     T: this should be handled by some parameter to the ChangeList.
     #     ordering = self.get_ordering(request)
     #     if ordering:
     #         qs = qs.order_by(*ordering)
     #     return qs
+
+    # 静态资源引入
+    class Media:
+        css = {
+            'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css",),
+        }
+        js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
+
+
+

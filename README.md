@@ -1,7 +1,7 @@
 # typeidea
 
 ## 项目记录
-### 5.奠定项目基石：Model
+### 5.奠定项目基石：Model---对数据库中字段的抽象
 1. 创建虚拟环境，项目与配置,编写完model后还需要编写admin才能展示
 
 2. 拆分settings适应不同的运行环境
@@ -42,9 +42,31 @@
     + 1.自定义列表筛选器（list_filter）——1.定义CategoryOwnerFilter:自定义过滤器只显示当前用户分类
     + 2.自定义列表页数据：重写get_quertset，让owner=request.user
 
+6. 编辑页面的配置：按钮位置，填写字段，字段展示顺序，输入框样式
+    + 按钮位置：save_on_top--控制是否在页面顶部展示按钮
+    + 字段展示以及展示顺序：fields或fieldset配置
+    + fields：限定要展示的字段，配置展示字段的顺序
+    + fieldsets：控制页面布局
+    + 字段不展示：exclude指定字段不展示   exclude = ('owner',) 作者字段不展示
+    + classes:加css属性
+
+7. 自定义静态资源引入
+    + 自定义静态资源引入路径: class Media:css or js
 
 
+### 自定义模块
+1. 自定义Form（表单）
+    + Form的作用：Form是对用户输入以及Model中要展示数据的抽象
 
+2. 在同一页面编辑关联数据：在分类页面直接编辑文章
+    + 编写blog/admin.py---PostInline类
 
+3. 定制site：一个系统对外提供多个admin后台
+    + 用户模块的管理与文章分类等数据的管理分开；修改后台的默认展示
+    + 自定义site：将后台分为两个：super_admin(管理后台)    admin(用户后台)
+
+### admin权限逻辑及SSO登录
+1. 集成SSO(单点登录)
+2. 判断某个用户是否由添加文章的权限：权限管理是在另外的系统上，只提供一个接口---有权限，响应状态为200，没权限则为403
 
  
