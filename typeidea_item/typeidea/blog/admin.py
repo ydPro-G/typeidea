@@ -54,14 +54,15 @@ class CategoryOwnerFilter(admin.SimpleListFilter): # 继承admin模块SimplListF
     
     # 返回要展示的内容和查询用的id
     def lookups(self, request, model_admin):
-        return Category.objects.filter(owner=request.owner).values_list('id'm 'name')
+        return Category.objects.filter(owner=request.owner).values_list('id', 'name')
     
-    # 根据URL Query的内容返回列表页的数据
+    # 根据URL Query的内容返回列表页的数据,举例-最后Query是？owner_category=1,那么这里拿到的self.value()就是1，根据1来过滤QuerySet
     def queryset(self, request, queryset):
         category_id = self.value()
         if category_id:
             return queryset.filter(category_id=self.value())
         return queryset
+
 
 
 
@@ -80,8 +81,8 @@ class PostAdmin(admin.ModelAdmin):
     # 配置可作为链接的字段
     list_display_links = []
 
-    # 配置列表筛选字段
-    list_filter = ['category', ]
+    # 配置列表筛选字段,设置侧边栏过滤器只能看到自己创建的分类
+    list_filter = [CategoryOwnerFilter]
     # 配置搜索字段
     search_fields = ['title','category_name']
 
@@ -115,3 +116,23 @@ class PostAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.owner = request.user 
         return super(PostAdmin, self).save_model(request, obj, form, change)
+
+    # 自定义列表页数据，让当前登录用户只能在列表页看到自己创建的文章，返回当前用户的查询集
+    def get_queryset(self,request):
+        # super 调用父类的方法  super(type[, object-or-type]) type --类  object-or-type -- 类，一般是self
+        qs = super(PostAdmin, self).get_queryset(request)
+        # 返回作者=登录用户
+        return qs.filter(owner=request.user)
+
+    #  def get_queryset(self, request):
+    #     """
+    #     返回管理站点可编辑的所有模型实例查询集，由变更列表视图使用
+    #     Return a QuerySet of all model instances that can be edited by the
+    #     admin site. This is used by changelist_view.
+    #     """
+    #     qs = self.model._default_manager.get_queryset()
+    #     # TODO: this should be handled by some parameter to the ChangeList.
+    #     ordering = self.get_ordering(request)
+    #     if ordering:
+    #         qs = qs.order_by(*ordering)
+    #     return qs

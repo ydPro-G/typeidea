@@ -38,8 +38,9 @@
 
 4. [创建config模型的admin配置文件](typeidea_item\typeidea\config\admin.py)
 
-5. 根据需求定制admin:1.数据批量展示和操作的列表页2.数据增加或修改的页面
-    + 1.自定义列表筛选器（list_filter）：可以看到所有作者，右侧筛选器也可以看到所有分类——1.筛选器只显示当前用户分类
+5. 根据需求定制blog的admin:1.数据批量展示和操作的列表页2.数据增加或修改的页面----问题(可以看到所有作者，右侧筛选器也可以看到所有分类)
+    + 1.自定义列表筛选器（list_filter）——1.定义CategoryOwnerFilter:自定义过滤器只显示当前用户分类
+    + 2.自定义列表页数据：重写get_quertset，让owner=request.user
 
 
 
