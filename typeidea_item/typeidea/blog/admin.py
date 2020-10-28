@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
+from django.contrib.admin.models import LogEntry
 
 from .models import Post, Category, Tag
 from .adminforms import PostAdminForm
@@ -142,7 +143,7 @@ class PostAdmin(BaseOwnerAdmin):
         return format_html(
             '<a href="{}">编辑</a>',
             # 用reverse方式获取后台地址时，将admin更换为cus_admin
-            reverse('cus_admin:bolg_post_change',args=(obj.id,)) # 根据名称解析处URL地址
+            reverse('cus_admin:blog_post_change', args=(obj.id,)) # 根据名称解析处URL地址
         )
     operator.short_description = '操作' # 展示文案
 
@@ -153,6 +154,11 @@ class PostAdmin(BaseOwnerAdmin):
             'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css",),
         }
         js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
+
+# 在admin页面查看操作日志
+@admin.register(LogEntry,site=custom_site)
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message']
 
 
 

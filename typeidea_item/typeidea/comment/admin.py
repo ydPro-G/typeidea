@@ -7,5 +7,5 @@ from typeidea.base_admin import BaseOwnerAdmin
 # comment admin配置
 
 @admin.register(Comment)
-class CommentAdmin(BaseOwnerAdmin):
+class CommentAdmin(admin.ModelAdmin):
     list_display = ('target', 'nickname', 'content', 'website', 'created_time')

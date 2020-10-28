@@ -1,7 +1,7 @@
 # typeidea
 
 ## 项目记录
-### 5.奠定项目基石：Model---对数据库中字段的抽象
+### 1.奠定项目基石：Model---对数据库中字段的抽象
 1. 创建虚拟环境，项目与配置,编写完model后还需要编写admin才能展示
 
 2. 拆分settings适应不同的运行环境
@@ -28,7 +28,7 @@
 
 
 
-### 配置admin页面
+### 2配置admin页面
 ####  通过继承admin.ModelAdmin,就能实现对这个Model的增删改查页面的配置
 1. 创建blog的管理后台
 
@@ -54,29 +54,43 @@
     + 自定义静态资源引入路径: class Media:css or js
 
 
-### 自定义模块
+### 3自定义模块
 1. 自定义Form（表单）
     + Form的作用：Form是对用户输入以及Model中要展示数据的抽象
 
 2. 在同一页面编辑关联数据：在分类页面直接编辑文章
     + 编写blog/admin.py---PostInline类
 
-3. 定制site：一个系统对外提供多个admin后台
+3. [定制site：一个系统对外提供多个admin后台](typeidea_item\typeidea\typeidea\custom_site.py)
     + 用户模块的管理与文章分类等数据的管理分开；修改后台的默认展示
     + 自定义site：将后台分为两个：super_admin(管理后台)    admin(用户后台)
 
-### admin权限逻辑及SSO登录
+### 4admin权限逻辑及SSO登录
 1. 集成SSO(单点登录)
 2. 判断某个用户是否由添加文章的权限：权限管理是在另外的系统上，只提供一个接口---有权限，响应状态为200，没权限则为403
 
 
 
 
-### 抽象author基类：将相同逻辑分散在不同模块的代码抽象为基类
+### 5抽象author基类：将相同逻辑分散在不同模块的代码抽象为基类
 1. [将逻辑相同的代码抽象成为基类](typeidea_item\typeidea\typeidea\base_admin.py)
 2. 【BaseOwnerAdmin】继承admin文件admin.ModelAdmin类，并根据我们的需求改写其中的save_model,get_queryset方法
     + save_model:设置对象的owner
     + get_queryset: 让列表页在展示文章或分类是只展示当前用户数据
 3. 将用到这两个方法APP中的类继承的父类更改为BaseOwnerAdmin
 
- 
+
+
+
+### 6.记录操作日志----LogEntry
+1. 如果需要自定义变更记录，只需要传递对应的参数即可
+2. LogEntry.objects.log_action方法参数：
+    + user_id:当前用户id
+    + content_type_id: 要保存内容的类型
+    + object_id: 记录变更实例的id --比如PostAdmin它就是post.id
+    + object_repr：实例的展示名称
+    + action_flag:操作记录（更改or新增or删除）
+    + change_message:记录的消息
+3. 在admin页面配置数据，查看操作日志
+
+
