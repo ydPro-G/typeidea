@@ -4,6 +4,7 @@ from django.utils.html import format_html
 
 from .models import Post, Category, Tag
 from .adminforms import PostAdminForm
+from typeidea.base_admin import BaseOwnerAdmin
 from typeidea.custom_site import custom_site # 引入typeidea文件的custom_site文件和类
 
 # Register your models here.
@@ -18,7 +19,7 @@ class PostInline(admin.TabularInline): # StackedInline 样式不同
 
 # 通过装饰器注册模型
 @admin.register(Category, site = custom_site)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(BaseOwnerAdmin):
     # 添加一行
     inlines = [PostInline, ]
     # admin页面列表展示
@@ -45,14 +46,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Tag, site = custom_site)
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(BaseOwnerAdmin):
     list_display = ('name','status','created_time')
     fields = ('name','status')
 
 
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        return super(TagAdmin,self).save_model(request,obj,form,change)
 
 # 自定义过滤器，只显示当前用户分类
 class CategoryOwnerFilter(admin.SimpleListFilter): # 继承admin模块SimplListFilter类来实现自定义过滤器
@@ -82,7 +80,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter): # 继承admin模块SimplListF
 
 # 将site更换为我们自定义的site
 @admin.register(Post, site = custom_site) 
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(BaseOwnerAdmin):
     #  自定义Form，修改status的输入框为文本框(Textarea)
     form = PostAdminForm
     # 列表页面展示字段
@@ -107,7 +105,7 @@ class PostAdmin(admin.ModelAdmin):
     # 保存，编辑，编辑并新建按钮是否在顶部展示
     save_on_top = True
 
-    # 添加页面显示的字段
+    """ 添加页面显示的字段
     fields = (
         ('category', 'title'),# category title 一行
         'desc', # desc 一行
@@ -115,6 +113,28 @@ class PostAdmin(admin.ModelAdmin):
         'content',
         'tag',
     )
+    """
+    fieldsets = (
+        ('基础配置',{
+            'description': '基础配置描述',
+            'fields': (
+                ('title', 'category'),
+                'status',
+            ),
+        }),
+        ('内容', {
+            'fields': (
+                'desc',
+                'content',
+            ),
+        }),
+        ('额外信息', {
+            'classes': ('wide',),
+            'fields': ('tag',),
+        })
+    )
+
+
 
     # 自定义方法
     def operator(self, obj):
@@ -126,29 +146,6 @@ class PostAdmin(admin.ModelAdmin):
         )
     operator.short_description = '操作' # 展示文案
 
-    # 默认保存登录作者信息
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user 
-        return super(PostAdmin, self).save_model(request, obj, form, change)
-
-    # 自定义列表页数据，让当前登录用户只能在列表页看到自己创建的文章，返回当前用户的查询集
-    def get_queryset(self,request):
-        # super 调用父类的方法  super(type[, object-or-type]) type --类  object-or-type -- 类，一般是self
-        qs = super(PostAdmin, self).get_queryset(request)
-        # 返回作者=登录用户
-        return qs.filter(owner=request.user)
-    #  def get_queryset(self, request):
-    #     """
-    #     返回管理站点可编辑的所有模型实例查询集，由变更列表视图使用
-    #     Return a QuerySet of all model instances that can be edited by the
-    #     admin site. This is used by changelist_view.
-    #     """
-    #     qs = self.model._default_manager.get_queryset()
-    #     T: this should be handled by some parameter to the ChangeList.
-    #     ordering = self.get_ordering(request)
-    #     if ordering:
-    #         qs = qs.order_by(*ordering)
-    #     return qs
 
     # 静态资源引入
     class Media:

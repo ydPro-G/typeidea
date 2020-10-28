@@ -69,4 +69,14 @@
 1. 集成SSO(单点登录)
 2. 判断某个用户是否由添加文章的权限：权限管理是在另外的系统上，只提供一个接口---有权限，响应状态为200，没权限则为403
 
+
+
+
+### 抽象author基类：将相同逻辑分散在不同模块的代码抽象为基类
+1. [将逻辑相同的代码抽象成为基类](typeidea_item\typeidea\typeidea\base_admin.py)
+2. 【BaseOwnerAdmin】继承admin文件admin.ModelAdmin类，并根据我们的需求改写其中的save_model,get_queryset方法
+    + save_model:设置对象的owner
+    + get_queryset: 让列表页在展示文章或分类是只展示当前用户数据
+3. 将用到这两个方法APP中的类继承的父类更改为BaseOwnerAdmin
+
  
