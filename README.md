@@ -1,6 +1,8 @@
 # typeidea
 
-## 项目记录
+# 项目记录
+
+## 后端开发 
 ### 1.奠定项目基石：Model---对数据库中字段的抽象
 1. 创建虚拟环境，项目与配置,编写完model后还需要编写admin才能展示
 
@@ -93,4 +95,27 @@
     + change_message:记录的消息
 3. 在admin页面配置数据，查看操作日志
 
+
+
+
+## 前端页面开发
+1. 目的：把后端创建的数据展示到前台
+2. 技术：先使用function view来完成前台的编辑，最后演化到class-based view
+3. 步骤：1-整理出需要多少url；2-分析页面上需要呈现的数据
+
+
+
+### 分析URL和页面数据
+1. 页面
+    + 博客首页：https://www.gg.com/
+    + 博文详情页: https://www.gg.com/post/<post_id>.html
+    + 分类列表页: https://www.gg.com/category/<category_id>/
+    + 标签列表页:https://www.gg.com/tag/<tag_id>/
+    + 友链展示页:https://www.gg.com/links/
+2. View
+    + 列表页View：根据不同的查询条件分别展示博客首页，分类页，标签页
+    + 文章页View：展示博文详情页
+    + 友链页View：展示所有友情链接
+
+### 编写URL代码
 

@@ -19,6 +19,12 @@ from django.contrib import admin
 from .custom_site import custom_site
 
 urlpatterns = [
+    # url(<正则>,<view function>,<默认传递参数，无论什么请求过来都会传递这个参数到view function中>,<url的名称>)
+    url(r'^$', post_list),
+    url(r'^category/(?P<category_id>\d+)/$', post_list),
+    url(r'^tag/(?P<tag_id>\d+)/$', post_list),
+    url(r'^post(?P<post_id>\d+).html$', post_detail),
+    url(r'^links/$', links),
     url(r'^super_admin/', admin.site.urls),
     url(r'^admin/', custom_site.urls),
 ]
