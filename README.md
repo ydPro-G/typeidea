@@ -117,5 +117,17 @@
     + 文章页View：展示博文详情页
     + 友链页View：展示所有友情链接
 
-### 编写URL代码
+### 编写URL代码：Url到View的数据映射
+1. url(<传递给view function函数的参数>,<view function>,<默认传递参数，无论什么请求过来都会传递这个参数到view function中>,<url的名称>)
+2. 在view编写相应的view function，处理<>内的参数
+3. 使用render方法
+    + render(request,template_name, context=None, content_type=None,status=None, using=None)
+    + request:封装了HTTP请求的request对象
+    + template_name:模板名称，可以像前面的代码那样带上路径
+    + context：字典数据，传递到模板上
+    + content_type:页面编码类型，默认值是text/html
+    + status：状态码，默认值是200
+    + using：使用哪种模板引擎解析
+### 编写模板：每个app各自创建模板or同一放到项目同名的APP中
+
 
