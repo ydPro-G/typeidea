@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # 根据APP顺序查找对应资源
 
 INSTALLED_APPS = [
+    'typeidea', # 增加app，好让其他app获取到模板信息
     'blog', # 文章，标签，分类
     'config', # 友链，链接
     'comment', # 评论

@@ -102,6 +102,7 @@
 1. 目的：把后端创建的数据展示到前台
 2. 技术：先使用function view来完成前台的编辑，最后演化到class-based view
 3. 步骤：1-整理出需要多少url；2-分析页面上需要呈现的数据
+4. 访问时的路径是根据url来的，但是返回的页面是views.py中的函数控制！！！！！！
 
 
 
@@ -120,7 +121,7 @@
 ### 编写URL代码：Url到View的数据映射
 1. url(<传递给view function函数的参数>,<view function>,<默认传递参数，无论什么请求过来都会传递这个参数到view function中>,<url的名称>)
 2. 在view编写相应的view function，处理<>内的参数
-3. 使用render方法
+3. 使用render方法：结合一个给定的模板和一个给定的上下文字典, 并返回一个渲染后的HttpResponse对象
     + render(request,template_name, context=None, content_type=None,status=None, using=None)
     + request:封装了HTTP请求的request对象
     + template_name:模板名称，可以像前面的代码那样带上路径
@@ -128,6 +129,11 @@
     + content_type:页面编码类型，默认值是text/html
     + status：状态码，默认值是200
     + using：使用哪种模板引擎解析
-### 编写模板：每个app各自创建模板or同一放到项目同名的APP中
 
+### 编写模板：每个app各自创建模板or同一放到项目同名的APP中
+1. [在主项目创建templates](typeidea_item\typeidea\typeidea\templates)
+2. 在templates中创建app-blog and app-config
+3. 在blog中创建两个模板
+4. 去配置INSTALLED_APPS
+5. 根据url设置然后看看view配置后的页面
 
