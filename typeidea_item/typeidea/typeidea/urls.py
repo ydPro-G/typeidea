@@ -28,6 +28,7 @@ urlpatterns = [
     # 通过这一逻辑我们可以处理不同的url匹配到同一参数的逻辑 /category/1 or post/2.html  后面的字段是对应的view函数， <>内的字段作为参数传递给函数处理
     url(r'^category/(?P<category_id>\d+)/$', post_list),
     url(r'^tag/(?P<tag_id>\d+)/$', post_list),
+    # post_id 1,2,3,4,5
     url(r'^post/(?P<post_id>\d+).html$', post_detail),
     url(r'^links/$', links),
     url(r'^super_admin/', admin.site.urls),

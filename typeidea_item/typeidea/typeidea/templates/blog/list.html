@@ -1,2 +1,13 @@
-<h1>list</h1>
-{{ name }}
+<ul>
+{% for post in post_list %}
+    <li>
+        <a href="/post/{{ post_id }}.html">{{ post.title }}</a>
+        <div>
+            <span>作者：{{ post.owner.username }}</span>
+            <span>分类：{{ post.category.name }}</span>
+        </div>
+        <p>{{ post.desc }}</p>
+    </li>
+{% endfor %}
+</ul>
+<!--如果post在post_list中，展示文章链接，展示作者，展示分类，展示摘要-->
