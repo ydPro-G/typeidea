@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse 
 
 from .models import Post,Tag,Category
+from config.models import SideBar
 # Create your views here.
 # 编写url对应的视图函数
 # 编写列表页url对应视图函数----编写文章页url对应视图函数
@@ -28,6 +29,7 @@ def post_list(request, category_id=None, tag_id=None):
         'category': category,
         'tag': tag,
         'post_list': post_list,
+        'sidebars': SideBar.get_all(),
     }
     # 将get_navs中返回的字典添加到内容字典中
     context.update(Category.get_navs())        

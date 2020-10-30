@@ -53,5 +53,10 @@ class SideBar(models.Model):
     # 侧边栏展示title
     def __str__(self):
         return self.title
+    
+    @classmethod
+    def get_all(cls):
+        return cls.objects.filter(status=cls.STATUS_SHOW)
+        
 
 

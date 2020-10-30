@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>文章列表</title>
+    </head>
+    <body>
+        
 {% if post %}
 <h1>{{ post.title }}</h1>
 <div>
@@ -11,3 +19,10 @@
 {% endif %}
 <!--先判断post是否存在，如果存在，展示分类，作者，文章内容-->
 <!--要先判断post存在与否，避免获取不到post报错-->
+{% for sidebar in sidebars %}
+    <h4>{{ sidebar.title }}</h4>
+    {{ sidebar.content }}
+{% endfor %}
+
+    </body>
+</html>

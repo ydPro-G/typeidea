@@ -155,9 +155,13 @@
     + 将通过tag_id拿到文章列表和tag对象抽出去作为独立函数
     + 将通过category_id拿到文章分类和文章对象抽出去作为独立函数
     + 先修改model层post模型定义:使用 select_related() 和 prefetch_related() 可以很好的减少数据库请求的次数，从而提高性能
-3. 分类信息：
+3. 分类信息：model->view->html
     + **[在model层中添加函数get_navs---获取所有状态正常的数据，一个变量存is_nav为true的数据，一个存置顶false的数据，返回这两个数据]**(typeidea_item\typeidea\blog\models.py)
     + **在views.py中获取这个函数返回的两个字典数据，添加到context中**
     + **在模板中获取views中的这两个数据，并添加新的html代码，来展示这两个数据**
     + 这个函数会产生两次数据库查询操作，可以使用if来判断让其只产生一次查询，但并非绝对
+4. 侧边栏配置：model->view->html
+    + 1. [在model层新增类函数get_all获取侧边栏信息](typeidea_item\typeidea\config\models.py)
+    + 2. 在view中将model中返回的数据添加到context中
+    + 3. 在模板中添加相应字段,展示数据
 

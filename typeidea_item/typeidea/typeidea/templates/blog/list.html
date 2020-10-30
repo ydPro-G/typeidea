@@ -38,6 +38,13 @@
     <a href="/category/{{ cate.id}}/">{{ cate.name }}</a>
     {% endfor %}
 </div>
+
+<div>侧边栏展示:
+    {% for sidebar in sidebars %}
+        <h4>{{ sidebar.title }}</h4>
+        {{ sidebar.content }}
+    {% endfor %}
+</div>
 <!--如果post在post_list中，展示文章链接，展示作者，展示分类，展示摘要-->
     </body>
 </html>
