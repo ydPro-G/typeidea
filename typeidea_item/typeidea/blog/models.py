@@ -29,7 +29,40 @@ class Category(models.Model):
     # 动作返回self.name
     def __str__(self):
         return self.name
-
+    
+    # 获取所有状态正常的数据，一个变量存is_nav为true的数据，一个存置顶false的数据，返回这两个数据
+    # 产生两次数据库请求，可以使用if语句判断，节省I/O操作，但并非绝对
+    @classmethod
+    def get_navs(cls):
+        # 因QuertSet懒特性，第一个filter函数在被调用是不产生数据库访问，因为返回对象未被使用
+        categorites = cls.objects.filter(status=cls.STATUS_NORMAL)
+        # 产生一次数据库查询， I/O操作，因为被使用
+        nav_categories = categorites.filter(is_nav=True)
+        # 产生第二次数据库查询， I/O操作 ， 因为被使用
+        normal_categories = categorites.filter(is_nav=False)
+        return {
+            # 两个都被使用，分别产生自己的查询语句， 对系统来说就是两次I/O操作
+            'navs': nav_categories,
+            'categories': normal_categories,
+        }
+'''
+    使用if来让其只查询数据库一次，只产生一次I/O操作
+    @classmethod
+    def get_navs(cls):
+        catefories = cls.objects.filter(status=cls.STATUS_NORMAL)
+        nav_categories = []
+        normal_categories = []
+        for cate in catefories:
+            if cate.is_nav:
+                nav_categories.append(cate)
+            else:
+                normal_categories.append(cate)
+    
+        return {
+            'navs': nav_categories,
+            'categories': normal_categories,
+        }
+'''
     
 
 # 标签
@@ -80,4 +113,44 @@ class Post(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = '文章'
         ordering = ['-id'] # 根据id降序排列
+    
+    @staticmethod
+    def get_by_tag(tag_id):
+        try:
+            # 获取tag信息
+            tag = Tag.objects.get(id=tag_id)
+        except Tag.DoesNotExist:
+            tag=None
+            post_list = []
+        else:
+            # 获取post_list信息
+            # 对于一对一字段（OneToOneField）和外键字段（ForeignKey），可以使用select_related 来对QuerySet进行优化。
+            # 标签下所有状态正常的文章,使用select_related查询，减少数据库请求次数
+            post_list = tag.post_set.filter(status=Post.STATUS_NORMAL)\
+                .select_related('owner', 'category')
+
+        return post_list, tag
+
+    @staticmethod
+    def get_by_category(category_id):
+        try:
+            # 获取category信息
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            category=None
+            post_list = []
+        else:
+            # 获取post_list信息
+            post_list = category.post_set.filter(status=Post.STATUS_NORMAL)\
+                .select_related('owner','category')
+                # 返回信息
+        return post_list, category
+    
+    @classmethod
+    # 获取最新帖子
+    def latest_posts(cls):
+        queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
+        return queryset
+
+
 

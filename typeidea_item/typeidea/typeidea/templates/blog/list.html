@@ -1,13 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>typeidea博客系统</title>
+    </head>
+    <body>
+<div>顶部分类：
+    {% for cate in navs %}
+    <a href="/category/{{ cate.id}}/">{{ cate.name }}</a>
+    {% endfor %}
+</div>
+<hr/>
+{% if tag %}
+标签页： {{ tag.name }}
+{% endif %}
+
+{% if category %}
+分类页：{{ category.name }}
+{% endif %}
+
+
 <ul>
-{% for post in post_list %}
+    {% for post in post_list %}
     <li>
-        <a href="/post/{{ post_id }}.html">{{ post.title }}</a>
+        <a href="/post/{{ post.id }}.html">{{ post.title }}</a>
         <div>
-            <span>作者：{{ post.owner.username }}</span>
-            <span>分类：{{ post.category.name }}</span>
+            <span>作者:{{ post.owner.username }}</span>
+            <span>分类:{{ post.category.name }}</span>
         </div>
         <p>{{ post.desc }}</p>
     </li>
-{% endfor %}
+    {% endfor %}
 </ul>
+<hr/>
+<div>底部分类：
+    {% for cate in categories %}
+    <a href="/category/{{ cate.id}}/">{{ cate.name }}</a>
+    {% endfor %}
+</div>
 <!--如果post在post_list中，展示文章链接，展示作者，展示分类，展示摘要-->
+    </body>
+</html>
+
+
