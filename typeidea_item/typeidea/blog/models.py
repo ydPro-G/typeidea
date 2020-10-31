@@ -73,6 +73,8 @@ class Tag(models.Model):
         (STATUS_NORMAL,'正常'),
         (STATUS_DELETE,'删除'),
     )
+    # PositiveIntegerField 自增主键，只包含正整数 默认值为1
+
 
     name = models.CharField(max_length=10,verbose_name='名称')
     status = models.PositiveIntegerField(default=STATUS_NORMAL,choices=STATUS_ITEMS,verbose_name='状态')
@@ -96,6 +98,8 @@ class Post(models.Model):
         (STATUS_DELETE,'删除'),
         (STATUS_DRAFT,'草稿'),
     )
+    pv = models.PositiveIntegerField(default=1)
+    uv = models.PositiveIntegerField(default=1)
     
     title = models.CharField(max_length=255,verbose_name='标题')
     desc = models.CharField(max_length=1024,blank=True,verbose_name='摘要')
@@ -146,11 +150,18 @@ class Post(models.Model):
                 # 返回信息
         return post_list, category
     
-    @classmethod
     # 获取最新帖子
+    @classmethod
     def latest_posts(cls):
         queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
         return queryset
+
+    # 返回最热帖子,按照访问量排序
+    @classmethod
+    def hot_posts(cls):
+        # 使用only接口只展示title和id
+        return cls.objects.all(status=STATUS_NORMAL).only('title', 'id').order_by('-pv')
+        # return cls.objects.filter(status=STATUS_NORMAL).order_by('-pv')
 
 
 

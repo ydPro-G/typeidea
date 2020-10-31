@@ -165,3 +165,11 @@
     + 2. 在view中将model中返回的数据添加到context中
     + 3. 在模板中添加相应字段,展示数据
 
+
+### 封装侧边栏逻辑
+#### 目标:1.把复杂逻辑封装，在模板中只用sidebar.content 2.调整Post模型，添加获取最热文章逻辑
+
+1. 调整模型
+    + 增加Post字段：pv,uv, 在model模型增加字段别忘了迁移(py manage.py makemigrations   py manage.py migrate)
+    + [增加方法展示最新，最热文章hot_posts](typeidea_item\typeidea\blog\models.py)
+    + 使用only只展示title和id字段
