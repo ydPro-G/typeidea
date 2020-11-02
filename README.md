@@ -173,3 +173,6 @@
     + 增加Post字段：pv,uv, 在model模型增加字段别忘了迁移(py manage.py makemigrations   py manage.py migrate)
     + [增加方法展示最新，最热文章hot_posts](typeidea_item\typeidea\blog\models.py)
     + 使用only只展示title和id字段
+2. 封装好SideBar
+    + 把数据的获取封装到Model层，在model层渲染数据，return渲染好的数据
+    + 定义单独的模板bolck渲染SideBar数据
