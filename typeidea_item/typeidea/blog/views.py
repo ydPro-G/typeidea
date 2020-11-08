@@ -28,6 +28,7 @@ def post_list(request, category_id=None, tag_id=None):
     context = {
         'category': category,
         'tag': tag,
+        
         'post_list': post_list,
         'sidebars': SideBar.get_all(),
     }

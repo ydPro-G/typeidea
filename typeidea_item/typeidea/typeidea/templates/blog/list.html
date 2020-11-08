@@ -1,53 +1,26 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>typeidea博客系统</title>
-    </head>
-    <body>
-<div>顶部分类：
-    {% for cate in navs %}
-    <a href="/category/{{ cate.id}}/">{{ cate.name }}</a>
-    {% endfor %}
-</div>
-<hr/>
-{% if tag %}
-标签页： {{ tag.name }}
-{% endif %}
+<!--首页列表-->
+{% extends "./base.html" %}
+{% block title %}
+    {% if tag %}
+    标签页：{{ tag.name }}
+    {% elif category %}
+    分类页：{{ category.name }}
+    {% endif %}
+{% endblock %}
 
-{% if category %}
-分类页：{{ category.name }}
-{% endif %}
-
-
-<ul>
-    {% for post in post_list %}
-    <li>
-        <a href="/post/{{ post.id }}.html">{{ post.title }}</a>
-        <div>
-            <span>作者:{{ post.owner.username }}</span>
-            <span>分类:{{ post.category.name }}</span>
-        </div>
-        <p>{{ post.desc }}</p>
-    </li>
-    {% endfor %}
-</ul>
-<hr/>
-<div>底部分类：
-    {% for cate in categories %}
-    <a href="/category/{{ cate.id}}/">{{ cate.name }}</a>
-    {% endfor %}
-</div>
-
-<div>侧边栏展示:
-    {% for sidebar in sidebars %}
-        <h4>{{ sidebar.title }}</h4>
-        {{ sidebar.content_html }}
-    {% endfor %}
-</div>
-<!--如果post在post_list中，展示文章链接，展示作者，展示分类，展示摘要-->
-<!--sidebar.content指的是侧边栏的内容字段-->
-    </body>
-</html>
-
-
+{% block main %}
+    <ul>
+        {% for post in post_list %}
+        <li>
+            <a href="/post/{{ post.id }}.html">{{ post.title }}</a>
+            <div>
+                <span>作者：{{ post.owner.username }}</span>
+                <span>分类：{{ post.category.name }}</span>
+            </div>
+            <p>{{ post.desc }}</p> <!--降序排序-->
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+<!--先判断post是否存在，如果存在，展示分类，作者，文章内容-->
+<!--要先判断post存在与否，避免获取不到post报错-->
