@@ -1,6 +1,0 @@
-<ul>
-    {% for comment in comments %}
-    <li><a href="/post/{{ comment.target_id }}.html">{{ comment.target_title }}</a></li>
-    {{ comment.nickname }} : {{ comment.content }}
-    {% endfor %}
-</ul>
