@@ -177,8 +177,13 @@
     + 把数据的获取封装到Model层，在model层渲染数据，return渲染好的数据
     + 定义单独的模板bolck渲染SideBar数据
     + 编写两个模板代码
+
+
 ### 整理模板代码：抽象出基础模板，通过基类方法实现；去掉模板不合适的硬编码(对扩展开放，对修改关闭)
 1. 抽象基础模板:通用的抽象出来做成类
     + 两个类
     + [block title:页面标题](typeidea_item\typeidea\typeidea\templates\blog\list.html)
     + [block main：页面主内容](typeidea_item\typeidea\typeidea\templates\blog\detail.html)
+
+2. 解耦硬编码：在逻辑运算中使用更加语义化变量来取代毫无意义的数字或url
+    + 定义URL时加上name参数，reverse通过name反向解析成URL
