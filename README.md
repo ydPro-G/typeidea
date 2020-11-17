@@ -188,3 +188,28 @@
 2. 解耦硬编码：在逻辑运算中使用更加语义化变量来取代毫无意义的数字或url
     + 定义URL时加上name参数，reverse通过name反向解析成URL
     + 修改urls.py参数
+
+
+## 将函数视图升级为class-based view
+**使用class-based view 重构 function view**
+
+### 1.函数与类
+1. 什么时候使用函数？什么时候封装出一个类呢？
+只要代码逻辑被重复使用，有需要共享的数据，就可以考虑封装出一个类。
+
+### 2.理解class-based-view
+**view是一个接受请求并且返回响应的可调用对象**
+
+1. view：基础的view，实现了基于HTTP方法的分发逻辑，get请求调用响应的get方法，但是他自己没有实现具体的get方法
+
+2. TemplateView：继承自View，直接用来返回指定的模板，实现了get方法，可以传递变量到模板中来进行数据展示
+
+3. DetailView：继承自View，实现了get方法，并且可以绑定某一模板，用来获取单个实例的数据
+
+4. ListView：继承自View，实现了get方法，可以通过绑定模板来批量获取数据
+
+5. 好处：解耦了HTTP GET/POST/OTHER 请求，如果需要增加处理post请求的逻辑，可以不用修改原来的函数，只需要新增函数 def post（self,request）即可，不用动之前的逻辑
+
+6. **使用了class-based view，那么url的定义通过as_view**
+通过as_viwe函数来接受请求以及返回响应。
+

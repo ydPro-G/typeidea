@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse 
+from django.views.generic import DetailView
 
 from .models import Post,Tag,Category
 from config.models import SideBar
@@ -39,18 +40,21 @@ def post_list(request, category_id=None, tag_id=None):
 
 
 
-
-# 文章页view: 展示文章id
-def post_detail(request, post_id=None):
-    try:
-        post = Post.objects.get(id=post_id)
-    except Post.DoesNotExist:
-        post = None
+# 替换post_detail
+class PostDetailView(DetailView):
+    model = Post # 最终获取哪条数据通过URL来知晓
+    template_name = 'blog/detail.html'
+# # 文章页view: 展示文章id
+# def post_detail(request, post_id=None):
+#     try:
+#         post = Post.objects.get(id=post_id)
+#     except Post.DoesNotExist:
+#         post = None
     
-    context = {
-        'post': post,
-    }
-    # update:把里面的字典的键/值对更新到字典中
-    context.update(Category.get_navs())
-    return render(request,'blog/detail.html', context=context)
+#     context = {
+#         'post': post,
+#     }
+#     # update:把里面的字典的键/值对更新到字典中
+#     context.update(Category.get_navs())
+#     return render(request,'blog/detail.html', context=context)
 
