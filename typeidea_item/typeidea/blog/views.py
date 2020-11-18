@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse 
 from django.views.generic import DetailView
+from django.views.generic import ListView
 
 from .models import Post,Tag,Category
 from config.models import SideBar
+from .models import Post
 # Create your views here.
 # 编写url对应的视图函数
 # 编写列表页url对应视图函数----编写文章页url对应视图函数
@@ -44,6 +46,12 @@ def post_list(request, category_id=None, tag_id=None):
 class PostDetailView(DetailView):
     model = Post # 最终获取哪条数据通过URL来知晓
     template_name = 'blog/detail.html'
+# 列表页代码
+class PostListView(ListView):
+    queryset = Post.latest_posts()
+    paginate_by = 1 # 每页数量
+    context_object_name = 'post_list' # 如果不设置此项，在模板中需要使用object_list变量
+    template_name = 'blog/list.html'
 # # 文章页view: 展示文章id
 # def post_detail(request, post_id=None):
 #     try:

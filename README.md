@@ -202,14 +202,30 @@
 
 1. view：基础的view，实现了基于HTTP方法的分发逻辑，get请求调用响应的get方法，但是他自己没有实现具体的get方法
 
-2. TemplateView：继承自View，直接用来返回指定的模板，实现了get方法，可以传递变量到模板中来进行数据展示
+2. `TemplateView`：继承自View，直接用来返回指定的模板，实现了get方法，可以传递变量到模板中来进行数据展示
 
-3. DetailView：继承自View，实现了get方法，并且可以绑定某一模板，用来获取单个实例的数据
+3. DetailView：继承自View，实现了get方法，并且可以绑定某一模板，获取一条数据
 
-4. ListView：继承自View，实现了get方法，可以通过绑定模板来批量获取数据
+4. ListView：继承自View，实现了get方法，绑定模板获取多条数据
 
 5. 好处：解耦了HTTP GET/POST/OTHER 请求，如果需要增加处理post请求的逻辑，可以不用修改原来的函数，只需要新增函数 def post（self,request）即可，不用动之前的逻辑
 
 6. **使用了class-based view，那么url的定义通过as_view**
 通过as_viwe函数来接受请求以及返回响应。
 
+7. **定义PostDetailView**，代替post_detail函数，修改模板代码，**修改url**，从url指定要匹配的参数来作为过滤post数据的参数（Post.objects.filter(pk=pk)）,拿到指定文章的实例
+
+8. 对于单个数据的请求，django已经帮我们封装好了数据获取的逻辑
+
+
+#### DetailView提供的属性和接口： 获取一条数据
+1. model属性：指定当前View要使用的Model
+2. queryset属性：跟model一样，二选一，设定基础的数据集，model设定没有过滤功能，通过 `queryset = Post.objects.filter(status=Post.Status_normal)`进行过滤
+3. template_name属性：模板名称
+4. get_queryset接口：获取数据，如果设置queryset，直接返回queryset
+5. get_object接口：根据URl参数，从queryset上获取对应的实例
+6. get_context_data接口：获取渲染到模板中的所有上下文
+
+#### ListView：获取多条数据，数据量过大可以选择分页
+1. 编写ListView--列表页
+2. [编写list.html](typeidea_item\typeidea\blog\list.html)

@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^category/(?P<category_id>\d+)/$', post_list, name='category-list'),
     url(r'^tag/(?P<tag_id>\d+)/$', post_list, name='tag-list'),
     
-    # 指定要匹配的参数pk作为过滤Post数据的参数，从而产生Post.objects.filter(pk=pk)拿到指定文章的实例
+    # 指定要匹配的参数pk作为过滤Post数据的参数，从而产生Post.objects.filter(pk=pk)拿到指定文章的实例 
     url(r'^post/(?P<ok>\d+).html$', PostDetailView.as_view(), name='post-detail'),
     url(r'^links/$', links, name='links'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
