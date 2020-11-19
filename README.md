@@ -228,4 +228,18 @@
 
 #### ListView：获取多条数据，数据量过大可以选择分页
 1. 编写ListView--列表页
-2. [编写list.html](typeidea_item\typeidea\blog\list.html)
+
+
+
+### 3.改造代码：将已存在的function view的代码重构为class-based view
+function view和class-based view的差别，说白了就是函数和类的区别
+
+1. 改造post_list和post_detail
+    + post_list处理多个url逻辑，改造为class-based view后，可以通过继承的方式来复用代码
+    + [将通用数据写成基类，分类导航，侧边栏，底部导航栏等](typeidea_item\typeidea\blog\views.py)
+
+    + queryset中数据根据当前选择的分类或者标签进行过滤
+    + 渲染到模板的数据加上当前选择的分类的数据
+    + 重写get_context_data,将get_context_data传入模板
+    + 重写get_queryset方法，获取指定的Model或queryset数据
+    

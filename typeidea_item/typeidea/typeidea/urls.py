@@ -20,7 +20,6 @@ from django.contrib import admin
 from .custom_site import custom_site
 from blog.views import post_detail,post_list # 导入用来处理请求的view函数
 from config.views import links
-from blog.views import PostDetailView # 文章页函数
 
 # 三个View post_list post_detail links
 urlpatterns = [
@@ -32,7 +31,7 @@ urlpatterns = [
     url(r'^tag/(?P<tag_id>\d+)/$', post_list, name='tag-list'),
     
     # 指定要匹配的参数pk作为过滤Post数据的参数，从而产生Post.objects.filter(pk=pk)拿到指定文章的实例 
-    url(r'^post/(?P<ok>\d+).html$', PostDetailView.as_view(), name='post-detail'),
+    url(r'^post/(?P<post_id>\d+).html$', post_detail , name='post-detail'),
     url(r'^links/$', links, name='links'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', custom_site.urls, name='admin'), 

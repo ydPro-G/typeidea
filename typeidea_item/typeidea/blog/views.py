@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse 
-from django.views.generic import DetailView
-from django.views.generic import ListView
+from django.views.generic import DetailView,ListView
+from django.shortcuts import get_object_or_404
 
 from .models import Post,Tag,Category
 from config.models import SideBar
-from .models import Post
+from .models import Post, Category,Tag
 # Create your views here.
 # 编写url对应的视图函数
 # 编写列表页url对应视图函数----编写文章页url对应视图函数
@@ -42,27 +42,48 @@ def post_list(request, category_id=None, tag_id=None):
 
 
 
-# 替换post_detail
-class PostDetailView(DetailView):
-    model = Post # 最终获取哪条数据通过URL来知晓
-    template_name = 'blog/detail.html'
-# 列表页代码
-class PostListView(ListView):
-    queryset = Post.latest_posts()
-    paginate_by = 1 # 每页数量
+
+# 文章页view: 展示文章id
+def post_detail(request, post_id=None):
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        post = None
+    
+    context = {
+        'post': post,
+    }
+    # update:把里面的字典的键/值对更新到字典中
+    context.update(Category.get_navs())
+    return render(request,'blog/detail.html', context=context)
+
+
+
+# 通用数据：分类导航，侧边栏和底部导航，这些是基础数据，写成一个类。通过组合方式复用
+class CommonViewMixin:
+    # 使用**kwargs定义参数时，kwargs将会接收一个positional argument后所有关键词参数的字典。
+    def get_context_data(self, **kwargs):  
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'sidebars': SideBar.get_all()
+        })
+        context.update(Category.get_navs())
+        return context
+
+# 列表页类函数，一页5个
+class IndexView(ListView):
+    queryset = Post.latest_posts() #最新帖子
+    paginate_by = 5  # 一页5个
     context_object_name = 'post_list' # 如果不设置此项，在模板中需要使用object_list变量
     template_name = 'blog/list.html'
-# # 文章页view: 展示文章id
-# def post_detail(request, post_id=None):
-#     try:
-#         post = Post.objects.get(id=post_id)
-#     except Post.DoesNotExist:
-#         post = None
-    
-#     context = {
-#         'post': post,
-#     }
-#     # update:把里面的字典的键/值对更新到字典中
-#     context.update(Category.get_navs())
-#     return render(request,'blog/detail.html', context=context)
 
+# 分类函数
+class CategoryView(IndexView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('category_id')
+        # pk
+        category = get_object_or_404(Category, pk = category_id)
+        context.update({
+            'category': category
+        })
