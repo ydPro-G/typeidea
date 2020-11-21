@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^tag/(?P<tag_id>\d+)/$', TagView.as_view(), name='tag-list'),
     
     # 指定要匹配的参数pk作为过滤Post数据的参数，从而产生Post.objects.filter(pk=pk)拿到指定文章的实例 
-    # 如果不写as_view() 会报错误，接受一个位置参数post_id但是给了2个
+    #   as_view() 只是个查询方法，根据?p<>里的字段查询 https://www.jianshu.com/p/17860becea09
     url(r'^post/(?P<post_id>\d+).html$', PostDetailView.as_view() , name='post-detail'),
     url(r'^links/$', links, name='links'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
