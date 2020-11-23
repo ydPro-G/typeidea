@@ -312,3 +312,5 @@ function view和class-based view的差别，说白了就是函数和类的区别
 1. 增加themes目录 在settings同级目录中增加themes/default目录
 2. 把templates移动到这个目录下
 3. 修改settings中的配置目录
+    + 在在DIRS中新增了Django模板查找路径，找不到模板情况下去各个APP查找，因为我们上面设置了'APP_DIRS'：True,如果要新建主题，只需要修改THEME=‘default’即可.
+4. 
