@@ -14,6 +14,7 @@ from .models import Post, Category,Tag
 
 
 # function view 现在被 class-based view 替代
+
 # tag和post是多对多关系，所以先获取tag对象，查询tag_id，不存在为空，存储在保存id并且筛选所有状态正常的展示出来
 # 没有就为空，如果tag_id为空，查询所有文章状态正常的展示，如果category_id不为空，展示所有分类正常状态文章
 # def post_list(request, category_id=None, tag_id=None):
@@ -44,18 +45,18 @@ from .models import Post, Category,Tag
 
 
 # 文章页view: 展示文章id
-def post_detail(request, post_id=None):
-    try:
-        post = Post.objects.get(id=post_id)
-    except Post.DoesNotExist:
-        post = None
+# def post_detail(request, post_id=None):
+#     try:
+#         post = Post.objects.get(id=post_id)
+#     except Post.DoesNotExist:
+#         post = None
     
-    context = {
-        'post': post,
-    }
-    # update:把里面的字典的键/值对更新到字典中
-    context.update(Category.get_navs())
-    return render(request,'blog/detail.html', context=context)
+#     context = {
+#         'post': post,
+#     }
+#     # update:把里面的字典的键/值对更新到字典中
+#     context.update(Category.get_navs())
+#     return render(request,'blog/detail.html', context=context)
 
 
 
@@ -82,6 +83,7 @@ class CategoryView(IndexView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category_id = self.kwargs.get('category_id')
+        # 指定要匹配的参数pk作为过滤Post数据的参数，从而产生Post.objects.filter(pk=pk)拿到指定文章的实例 
         # pk= id
         # get_object_or_404 是快捷方式，用来获取一个对象实例，获取到就返回实例对象，不存在抛出404错误
         category = get_object_or_404(Category, pk = category_id)

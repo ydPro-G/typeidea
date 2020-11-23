@@ -250,3 +250,65 @@ function view和class-based view的差别，说白了就是函数和类的区别
 4. 编写URl代码
 
 5. 在list.html增加分页逻辑
+
+
+
+### Django的view如何处理请求
+**总结**：
+分别编写了function view 和 class-based view(blog/views.py).
+定义url，将请求转发到对应的view上.
+知道如何在view中获取数据，操作Model层拿到数据，渲染模板然后返回.
+
+1. function view & class-based view 两种方式处理请求的差别：
+    + request经过所有的middleware的process_request方法做校验——>然后解析URL——>根据配置的URL和View的映射——>把request对象传递到View
+
+    + 👆View有两类，function view or class-based view
+
+    + function view：简单函数——>流程就是函数的执行流程，只是第一个参数是request对象
+
+2. class-based viwe 处理流程
+    + as_view逻辑：返回一个闭包——>闭包会在Django解析完请求后调用
+        + 闭包的逻辑：
+            + 给class（定义的view类）赋值--request，args，和kwargs
+            + 根据HTTP方法分发请求
+    
+    + 请求到达后的完整逻辑
+        1. 调用dispatch分发
+        2. 接着调用GET方法
+            1. 在GET请求中，首先调用get_queryset方法，拿到数据源
+            2. 接着调用get_context_data方法，拿到了需要渲染到模板中的数据
+                + 1)在get_context_data中，首先调用get_paginate_by拿到每页数据
+                + 2)接着调用get_context_object_name拿到要渲染到模板中的这个quertset名称
+                + 3)然后调用paginate_queryset进行分页处理
+                + 4)最后拿到的数据转为dict并返回
+            3. 调用render_to_response渲染数据到页面
+                + 1)在render——to_response中调用get_template_names拿到模板名
+                + 2)然后把request，context，template_name等传递到模板中
+
+
+
+## 美化界面：前端样式框架Bootstrap
+
+
+### 框架提供的功能
+1. 页面脚手架：样式重置，浏览器兼容，栅格系统和简单布局
+2. 基础的css样式：代码高亮，排版，表单，表格和小的样式效果
+3. 组件：tab，pill,导航，弹窗，顶部栏等
+4. JavaScript插件：一些动态功能，下拉菜单，进度条等
+
+### 容器和栅格系统
+1. 容器：<div>
+2. 栅格：页面划分
+
+
+### 简单的页面布局
+1. container:提供容器，所有其他元素需在此容器中
+2. navbar:导航栏组件，配置导航信息
+3. jumbotron：大块内容展示重要信息
+4. row和col-?:排列行和列
+5. card: 卡片组件以卡片方式组织内容的展示
+
+### 基于Bootstrap美化页面
+1. 增加themes目录 在settings同级目录中增加themes/default目录
+2. 把templates移动到这个目录下
+3. 修改settings中的配置目录
