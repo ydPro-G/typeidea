@@ -248,3 +248,5 @@ function view和class-based view的差别，说白了就是函数和类的区别
 3. [编写文章详情页view](typeidea_item\typeidea\blog\views.py)
 
 4. 编写URl代码
+
+5. 在list.html增加分页逻辑
