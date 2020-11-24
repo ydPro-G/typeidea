@@ -1,34 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>{% block title %}首页{% endblock %}- typeidea 博客系统</title>
+        <title>{% block title %}首页{% endblock %}- typeidea博客系统</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1,
+        shrink-to-fit=no">
+        <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.css">
+        <style>
+            .post {
+                margin-bottom: 5px;  /* 配置每个post卡片下面的间隔 */
+            }
+        </style>
     </head>
+
     <body>
-        <div>顶部分类：
-            {% for cate in navs %} <!--通过is——nav判断是否为顶部分类-->
-            <a href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
-            {% endfor %}
+        <!--内容头部-->
+        <div class="container head">
+            <!--导航栏组件，配置导航信息-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a href="/" class="navbar-brand">首页</a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        {% for cate in navs %}<!--通过is——nav判断是否为顶部分类-->
+                        <li class="nav-item">
+                            <a href="{% url 'category-list' cate.id%}" class="nav-link">
+                                {{ cate.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <form action="GET" class="form-inline my-2 my-lg-0">
+                        <input type="search" class="form-control mr-sm-2" placeholder="Search" 
+                        aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">搜索</button>
+                    </form>
+                </div>
+            </nav>
+            <!--大块内容展示-->
+            <div class="jumbotron">
+                <h1 class="display-4">Typeidea</h1>
+                <p class="lead">基于Django的多人博客系统</p>
+            </div>
         </div>
-        <hr/>
 
-        {% block main %} <!--引入基类-->
-        {% endblock %} 
-
-        <hr/>
-        <div>底部分类：
-            {% for cate in categories %}
-            <a href="{% url 'category-list' cate.id %}">{{ cate.name }}</a>
-            {% endfor %}
+        <!--内容-->
+        <div class="container main">
+            <div class="row">
+                <div class="col-9 post-list">
+                    {% block main %} <!--引入基类-->
+                    {% endblock %}
+                </div>
+                <div class="col-3">
+                    {% block sidebar %} <!--侧边栏基类-->
+                        {% for sidebar in sidebars %}
+                        <div class="card sidebar">
+                            <div class="card-body">
+                                <h4 class="card-title">{{ sidebar.title}}</h4>
+                                <p>
+                                    {{ sidebar.content_html }}<!--sidebar.content指的是侧边栏的内容字段-->
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endblock %}
+                </div>
+            </div>
         </div>
-
-        <hr/>
-        <div>侧边栏展示：
-            {% for sidebar in sidebars %}
-                <h4>{{ sidebar.title }}</h4>
-                {{ sidebar.content_html }}
-                <!--sidebar.content指的是侧边栏的内容字段-->
-            {% endfor %}
-        </div>
+        
+        <!--页脚-->
+        <footer class="footer">
+            {% block footer %}
+            <div class="container">
+                <hr/>
+                <nav class="nav category">
+                {% for cate in categories %}
+                <a href="{% url 'category-list' cate.id %}" class="nav-link">
+                    {{ cate.name }}
+                </a>
+                {% endfor %}
+                </nav>
+            </div>
+            <div class="container power">
+                <span class="text-muyed">Power by Typeidea@GG</span>
+            </div>
+            {% endblock %}
+        </footer>
     </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
