@@ -329,8 +329,9 @@ function view和class-based view的差别，说白了就是函数和类的区别
 1. 内联css与外部css
 2. Django中的静态资源
     + 怎么在Django中处理静态资源？
-    + 通过INSTALLED_APPS中增加'django.contrib.staticfiles'这个APP
-    + 帮助我们在开发环境中提供静态资源的服务功能，但是仅限于DEBUG=True，线上时使用Nginx和CDN来配置，保证线上安全
+    + 线下：通过INSTALLED_APPS中自带的'django.contrib.staticfiles'这个APP
+    + 线上：通过STATIC_ROOT和Nginx来部署静态资源
+
 3. 配置settings文件：
     + STATIC_ROOT：配置部署后的静态资源路径。Django提供collectionstatic命令收集所有静态资源到STATIC_ROOT配置的目录中
     + STATIC_URL：用来配置页面上的静态资源的起始路径
@@ -341,4 +342,13 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 使用static标签时为了避免把static硬编码到页面中
     + static不是内置标签，需要在顶部加载{% load static %}
 
+**总结**：
+前端概念，Bootstrap提供功能，套用Bootstrap框架实现静态页面，主题配置，熟悉THEME的逻辑。
+
+
+
+
+
+
+## 完成整个博客系统
 
