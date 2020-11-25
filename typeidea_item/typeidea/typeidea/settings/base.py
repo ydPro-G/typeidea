@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'typeidea.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3',),
     }
 }
 
@@ -126,4 +126,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+# 配置页面静态资源起始路径
 STATIC_URL = '/static/'
+
+# 配置上线部署后的静态资源路径
+STATIC_ROOT = '/tmp/static' # 上线后配置
+
+# 静态资源所在目录
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'themes', THEME, "static"),
+]
+

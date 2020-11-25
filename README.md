@@ -311,7 +311,7 @@ function view和class-based view的差别，说白了就是函数和类的区别
 ### 基于Bootstrap美化页面
 1. 增加themes目录 在settings同级目录中增加themes/default目录
 2. 把templates移动到这个目录下
-3. 修改settings中的配置目录
+3. 修改settings中的配置目录：**THEME指定主题文件的整体目录**
     + 在在DIRS中新增了Django模板查找路径，找不到模板情况下去各个APP查找，因为我们上面设置了'APP_DIRS'：True,如果要新建主题，只需要修改THEME=‘default’即可.新建主题bootstrap==THEME=‘bootstrap’
 4. 修改模板：新增**bootstrap**主题
 5. 编写bootstrap/base.html
@@ -324,5 +324,21 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + [在导航页面需要被替换的地方使用{% block name %} {% endblock %}  52行](typeidea_item\typeidea\typeidea\themes\bootstrap\templates\blog\base.html)
     + 在非导航页面编辑具体逻辑
 
+
+### 配置线上静态资源
+1. 内联css与外部css
+2. Django中的静态资源
+    + 怎么在Django中处理静态资源？
+    + 通过INSTALLED_APPS中增加'django.contrib.staticfiles'这个APP
+    + 帮助我们在开发环境中提供静态资源的服务功能，但是仅限于DEBUG=True，线上时使用Nginx和CDN来配置，保证线上安全
+3. 配置settings文件：
+    + STATIC_ROOT：配置部署后的静态资源路径。Django提供collectionstatic命令收集所有静态资源到STATIC_ROOT配置的目录中
+    + STATIC_URL：用来配置页面上的静态资源的起始路径
+    + STATICFILES_DIRS：指定静态资源所在的目录
+
+4. 在base.html 顶部加载 {% load static %},修改link中的路径
+    + 使用css {% static 'css/base.css' %} 
+    + 使用static标签时为了避免把static硬编码到页面中
+    + static不是内置标签，需要在顶部加载{% load static %}
 
 
