@@ -312,8 +312,17 @@ function view和class-based view的差别，说白了就是函数和类的区别
 1. 增加themes目录 在settings同级目录中增加themes/default目录
 2. 把templates移动到这个目录下
 3. 修改settings中的配置目录
-    + 在在DIRS中新增了Django模板查找路径，找不到模板情况下去各个APP查找，因为我们上面设置了'APP_DIRS'：True,如果要新建主题，只需要修改THEME=‘default’即可.
+    + 在在DIRS中新增了Django模板查找路径，找不到模板情况下去各个APP查找，因为我们上面设置了'APP_DIRS'：True,如果要新建主题，只需要修改THEME=‘default’即可.新建主题bootstrap==THEME=‘bootstrap’
 4. 修改模板：新增**bootstrap**主题
 5. 编写bootstrap/base.html
 6. 编写bootstarp/list.html
+7. 编写bootstarp/detail.html
+
+#### 模板页面extends和block的用法：在导航页面只使用block，具体block里的逻辑在非导航页面编写，非导航页面使用extends 来引入父模板路径
+1. extends 引入父模板路径[{% extends "./base.html" %}]
+2. block 
+    + [在导航页面需要被替换的地方使用{% block name %} {% endblock %}  52行](typeidea_item\typeidea\typeidea\themes\bootstrap\templates\blog\base.html)
+    + 在非导航页面编辑具体逻辑
+
+
 

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--首页-->
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -47,7 +48,8 @@
         <div class="container main">
             <div class="row">
                 <div class="col-9 post-list">
-                    {% block main %} <!--引入基类-->
+                    <!--Django页面继承 在导航窗文件需要被替换的地方使用-->
+                    {% block main %} 
                     {% endblock %}
                 </div>
                 <div class="col-3">
