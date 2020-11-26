@@ -18,7 +18,7 @@ from django.contrib import admin
 
 
 from .custom_site import custom_site
-from config.views import links
+from config.views import LinkListView
 from blog.views import (
     IndexView, CategoryView, TagView,
     PostDetailView, SearchView, AuthorView,
@@ -36,9 +36,9 @@ urlpatterns = [
     
     #   as_view() 只是个查询方法，根据?p<>里的字段查询 https://www.jianshu.com/p/17860becea09
     url(r'^post/(?P<post_id>\d+).html$', PostDetailView.as_view() , name='post-detail'),
-    url(r'^links/$', links, name='links'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', custom_site.urls, name='admin'), 
     url(r'^search/$', SearchView.as_view(), name='search'),
     url(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
+    url(r'^link/$', LinkListView.as_view(), name='links'),
 ]

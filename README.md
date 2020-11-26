@@ -120,7 +120,9 @@
 
 ### 编写URL代码：Url到View的数据映射
 1. url(<传递给view function函数的参数>,<view function>,<默认传递参数，无论什么请求过来都会传递这个参数到view function中>,<url的名称>)
+
 2. 在view编写相应的view function，处理<>内的参数
+
 3. 使用render方法：结合一个给定的模板和一个给定的上下文字典, 并返回一个渲染后的HttpResponse对象
     + render(request,template_name, context=None, content_type=None,status=None, using=None)
     + request:封装了HTTP请求的request对象
@@ -146,7 +148,7 @@
 
 
 
-### 编写正式view代码：把数据从数据库中取出来并放到模板中展示
+# 编写正式view代码：把数据从数据库中取出来并放到模板中展示
 1. post_list逻辑：使用Model从数据库批量拿取数据，然后展示标题和摘要
 2. post_detail逻辑：使用Model从数据库批量拿取数据，然后展示
 3. 编写模板数据：根据view传递的数据,使用模板语法展示数据
@@ -221,7 +223,7 @@
 6. **使用了class-based view，那么url的定义通过as_view**
 通过as_viwe函数来接受请求以及返回响应。
 
-7. **定义PostDetailView**，代替post_detail函数，修改模板代码，**修改url**，从url指定要匹配的参数来作为过滤post数据的参数（Post.objects.filter(pk=pk)）,拿到指定文章的实例
+7. **定义PostDetailView**，代替post_detail函数，修改模板代码，**修改url**，从url指定要匹配的参数来作为过滤post数据的参数（Post.objects.filter(pk=pk)）,拿到指定文章的实例(pk == primary key(主键))
 
 8. 对于单个数据的请求，django已经帮我们封装好了数据获取的逻辑
 
@@ -326,7 +328,8 @@ function view和class-based view的差别，说白了就是函数和类的区别
 6. 编写bootstarp/list.html
 7. 编写bootstarp/detail.html
 
-#### 模板页面extends和block的用法：在导航页面只使用block，具体block里的逻辑在非导航页面编写，非导航页面使用extends 来引入父模板路径
+#### 模板页面extends和block的用法：导航页面是一个主模版，非导航页面通过extends引入主模版，通过block往里面添加不同的内容
+
 1. extends 引入父模板路径[{% extends "./base.html" %}]
 2. block 
     + [在导航页面需要被替换的地方使用{% block name %} {% endblock %}  52行](typeidea_item\typeidea\typeidea\themes\bootstrap\templates\blog\base.html)
@@ -368,7 +371,8 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 评论模块
 
 
-2. 增加搜索和作者过滤：根据关键词搜索文章；展示指定作者的文章列表
+### . 增加搜索和作者过滤：根据关键词搜索文章；展示指定作者的文章列表
+1. 增加搜索页面
     + [views.py增加搜索功能：根据title和desc搜索 继承IndexView，编写SearchView，控制数据源由get_queryset方法实现](typeidea_item\typeidea\blog\views.py)
     + 配置urls.py
     + 修改模板字段
@@ -377,5 +381,21 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 增加view
     + 增加新的url
     + 修改模板中对应的链接
+
+### 增加友链页面
+
+1. 编写config/views.py
+2. 编写urls.py
+3. 编写config/links.html
+
+
+### 增加评论模块：单独页面提交
+1. 评论提交方式：JavaScript异步提交，当页提交，单独页面提交
+
+2. 评论模块通用化改造
+    + 通过GenericForeigenKey(通用外键)关联多个表
+    + 通过增加一个字段content_type来储存对应的模型类型
+
+
 
 

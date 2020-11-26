@@ -15,6 +15,7 @@ class Link(models.Model):
     )
     title = models.CharField(max_length=50,verbose_name='标题')
     href = models.URLField(verbose_name='链接') # 默认长度为200
+    # choices一个元组 一般是下拉框，方便页面获取字典值
     status = models.PositiveIntegerField(default=STATUS_NORMAL,choices=STATUS_ITEMS,verbose_name='状态')
     weight = models.PositiveIntegerField(default=1,choices=zip(range(1,6),range(1,6)),verbose_name='权重',help_text='权重高展示顺序靠前')
     owner = models.ForeignKey(User,verbose_name='作者')
@@ -26,7 +27,7 @@ class Link(models.Model):
         verbose_name = verbose_name_plural = '友链'
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class SideBar(models.Model):
     STATUS_SHOW = 1
