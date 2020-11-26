@@ -21,7 +21,7 @@ from .custom_site import custom_site
 from config.views import links
 from blog.views import (
     IndexView, CategoryView, TagView,
-    PostDetailView,
+    PostDetailView, SearchView,
 )
 
 
@@ -39,4 +39,5 @@ urlpatterns = [
     url(r'^links/$', links, name='links'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', custom_site.urls, name='admin'), 
+    url(r'^search/$', SearchView.as_view(), name='search'),
 ]

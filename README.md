@@ -102,7 +102,7 @@
 1. 目的：把后端创建的数据展示到前台
 2. 技术：先使用function view来完成前台的编辑，最后演化到class-based view
 3. 步骤：1-整理出需要多少url；2-分析页面上需要呈现的数据
-4. 访问时的路径是根据url来的，但是返回的页面是views.py中的函数控制！！！！！！
+4. **访问时的路径是根据url来的，但是返回的页面是views.py中的函数控制！！！！！！****
 
 
 
@@ -139,6 +139,13 @@
 
 
 
+
+
+
+
+
+
+
 ### 编写正式view代码：把数据从数据库中取出来并放到模板中展示
 1. post_list逻辑：使用Model从数据库批量拿取数据，然后展示标题和摘要
 2. post_detail逻辑：使用Model从数据库批量拿取数据，然后展示
@@ -149,13 +156,14 @@
 
 
 ### 配置页面通用数据
+**新增页面逻辑：model->view->url->html**
 1. 完善模板信息：根据html5标准组织页面
     + 增加不同页面的信息展示：post_list
 2. 重构post_list视图
     + 将通过tag_id拿到文章列表和tag对象抽出去作为独立函数
     + 将通过category_id拿到文章分类和文章对象抽出去作为独立函数
     + 先修改model层post模型定义:使用 select_related() 和 prefetch_related() 可以很好的减少数据库请求的次数，从而提高性能
-3. 分类信息：model->view->html
+3. 分类信息：model->view——>html
     + **[在model层中添加函数get_navs---获取所有状态正常的数据，一个变量存is_nav为true的数据，一个存置顶false的数据，返回这两个数据]**(typeidea_item\typeidea\blog\models.py)
     + **在views.py中获取这个函数返回的两个字典数据，添加到context中**
     + **在模板中获取views中的这两个数据，并添加新的html代码，来展示这两个数据**
@@ -218,13 +226,13 @@
 8. 对于单个数据的请求，django已经帮我们封装好了数据获取的逻辑
 
 
-#### DetailView提供的属性和接口： 获取一条数据
-1. model属性：指定当前View要使用的Model
-2. queryset属性：跟model一样，二选一，设定基础的数据集，model设定没有过滤功能，通过 `queryset = Post.objects.filter(status=Post.Status_normal)`进行过滤
-3. template_name属性：模板名称
-4. get_queryset接口：获取数据，如果设置queryset，直接返回queryset
+#### [DetailView提供的属性和接口： 获取一条数据](https://blog.csdn.net/weixin_42134789/article/details/80327619)
+1. model：指定当前View要使用的Model
+2. queryset：跟model一样，二选一，设定基础的数据集，model设定没有过滤功能，通过 `queryset = Post.objects.filter(status=Post.Status_normal)`进行过滤
+4. get_queryset：返回一个量身定制的对象列表,定义了该方法那么DetailView返回的一个具体对象只会从queryset里查找。
 5. get_object接口：根据URl参数，从queryset上获取对应的实例
-6. get_context_data接口：获取渲染到模板中的所有上下文
+6. get_context_data：可以用于给模板传递模型以外的内容或参数
+3. template_name属性：模板名称
 
 #### ListView：获取多条数据，数据量过大可以选择分页
 1. 编写ListView--列表页
@@ -351,4 +359,17 @@ function view和class-based view的差别，说白了就是函数和类的区别
 
 
 ## 完成整个博客系统
+1. 需要完善的页面：
+    + 搜索结果页
+    + 作者列表页
+    + 侧边栏的热门文章
+    + 文章访问链接统计
+    + 友情链接页面
+    + 评论模块
+
+
+2. 增加搜索和作者过滤：根据关键词搜索文章；展示指定作者的文章列表
+    + [views.py增加搜索功能：根据title和desc搜索 继承IndexView，编写SearchView，控制数据源由get_queryset方法实现](typeidea_item\typeidea\blog\views.py)
+    + 配置urls.py
+
 

@@ -32,9 +32,13 @@
                         </li>
                         {% endfor %}
                     </ul>
-                    <form action="GET" class="form-inline my-2 my-lg-0">
-                        <input type="search" class="form-control mr-sm-2" placeholder="Search" 
-                        aria-label="Search">
+                    <!--form提交数据到数据库
+                    action指定提交数据到那个url
+                    method指定时GET or POST
+                    input标签内容发送到服务端-->
+                    <form class="form-inline" action="/search/" method="GET">
+                        <input type="search" class="form-control" name="keyword" placeholder="Search"
+                        aria-label="Search" value="{{ keyword }}">
                         <button class="btn btn-outline-success" type="submit">搜索</button>
                     </form>
                 </div>

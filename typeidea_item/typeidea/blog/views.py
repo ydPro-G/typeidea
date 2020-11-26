@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse 
 from django.views.generic import DetailView,ListView
@@ -95,7 +96,7 @@ class CategoryView(IndexView):
     # 重写queryset,根据分类过滤
     def get_queryset(self):
         """ 重写queryset，根据分类过滤 """
-        queryset = super().get_queryset() # 继承get_queryset方法所有
+        queryset = super().get_queryset() # 调用父类方法，获取父类所有
         category_id = self.kwargs.get('category_id') # kwargs=关键字参数 根据分类关键字筛选
         return queryset.filter(category_id=category_id)
     
@@ -123,6 +124,28 @@ class PostDetailView(CommonViewMixin,DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id' # url字段为post_id
+
+
+class SearchView(IndexView):
+    def get_context_data(self):
+        # get_context_data()可以用于给模板传递模型以外的内容或参数
+        context = super().get_context_data()
+        # update 更新数据keyword（搜索关键字字典）字典
+        context.update({
+            'keyword': self.request.GET.get('keyword', '')
+        })
+        return context
+
+    def get_queryset(self):
+        # get_queryset()返回一个量身定制的对象列表,可以只获取自己想要的数据
+        queryset = super().get_queryset() # 调用父类方法
+        keyword = self.request.GET.get('keyword') # keyword搜索的关键字
+        # 如果没有搜索返回所有，有搜索返回title或者desc
+        if not keyword:
+            return queryset
+            # 返回自己想要的数据
+        return queryset.filter(Q(title__icontains=keyword) | Q(desc__icontains=
+        keyword))
 
 
 
