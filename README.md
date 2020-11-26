@@ -371,5 +371,11 @@ function view和class-based view的差别，说白了就是函数和类的区别
 2. 增加搜索和作者过滤：根据关键词搜索文章；展示指定作者的文章列表
     + [views.py增加搜索功能：根据title和desc搜索 继承IndexView，编写SearchView，控制数据源由get_queryset方法实现](typeidea_item\typeidea\blog\views.py)
     + 配置urls.py
+    + 修改模板字段
+
+3. 增加作者页面
+    + 增加view
+    + 增加新的url
+    + 修改模板中对应的链接
 
 

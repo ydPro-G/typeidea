@@ -126,6 +126,7 @@ class PostDetailView(CommonViewMixin,DetailView):
     pk_url_kwarg = 'post_id' # url字段为post_id
 
 
+# 搜索view
 class SearchView(IndexView):
     def get_context_data(self):
         # get_context_data()可以用于给模板传递模型以外的内容或参数
@@ -147,6 +148,13 @@ class SearchView(IndexView):
         return queryset.filter(Q(title__icontains=keyword) | Q(desc__icontains=
         keyword))
 
+
+# 作者页面view
+class AuthorView(IndexView):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        author_id = self.kwargs.get('owner_id')
+        return queryset.filter(owner_id=author_id)
 
 
 
