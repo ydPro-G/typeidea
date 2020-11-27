@@ -23,6 +23,7 @@ from blog.views import (
     IndexView, CategoryView, TagView,
     PostDetailView, SearchView, AuthorView,
 )
+from comment.views import CommentView
 
 
 # 三个View post_list post_detail links
@@ -41,4 +42,5 @@ urlpatterns = [
     url(r'^search/$', SearchView.as_view(), name='search'),
     url(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
     url(r'^link/$', LinkListView.as_view(), name='links'),
+    url(r'^comment/$', CommentView.as_view(), name='comment'),
 ]

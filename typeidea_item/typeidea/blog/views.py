@@ -4,9 +4,12 @@ from django.http import HttpResponse
 from django.views.generic import DetailView,ListView
 from django.shortcuts import get_object_or_404
 
+from comment.forms import CommentForm
+from comment.models import Comment
 from .models import Post,Tag,Category
 from config.models import SideBar
 from .models import Post, Category,Tag
+
 # Create your views here.
 # 编写url对应的视图函数
 # 编写列表页url对应视图函数----编写文章页url对应视图函数
@@ -66,6 +69,7 @@ class CommonViewMixin:
     # 使用**kwargs定义参数时，kwargs将会接收一个positional argument后所有关键词参数的字典。
     def get_context_data(self, **kwargs):  
         context = super().get_context_data(**kwargs)
+        # update:把里面的字典的键/值对更新到字典中
         context.update({
             'sidebars': SideBar.get_all()
         })
@@ -118,12 +122,23 @@ class TagView(IndexView):
         tag_id = self.kwargs.get('tag_id')
         return queryset.filter(tag_id=tag_id)
 
-# 文章详情页
+# 文章详情页，也展示评论
 class PostDetailView(CommonViewMixin,DetailView):
     queryset = Post.latest_posts()
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id' # url字段为post_id
+
+    # 将评论传递到模板层
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        # update:把里面的字典的键/值对更新到字典中
+        context.update({
+            'comment_form': CommentForm,
+            'comment_list': Comment.get_by_target(self.request.path),
+        })
+        return context
+
 
 
 # 搜索view

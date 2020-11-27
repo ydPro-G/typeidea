@@ -392,10 +392,26 @@ function view和class-based view的差别，说白了就是函数和类的区别
 ### 增加评论模块：单独页面提交
 1. 评论提交方式：JavaScript异步提交，当页提交，单独页面提交
 
-2. 评论模块通用化改造
+2. 评论模块通用化改造：修改comment中的target为CharField，存放被评论内容的网址
+
+3. 通用外键
     + 通过GenericForeigenKey(通用外键)关联多个表
     + 通过增加一个字段content_type来储存对应的模型类型
+    + content_type存放的字符串由ContentType来实现
+    + 为了实现通用外键，需要多维护一个字段和一张表
 
+4. 实现评论模块
+    + 修改model中target字段类型从外键修改为CharField
+    + 使用python manage.py makemigrations命令记录model.py的改动
+    + 使用python manage.py migrate 使数据库状态与修改完的model状态同步
 
+    + 创建cpmment/forms.py（[Meta](https://www.jianshu.com/p/dd7f4a11a7bb)）
+    + 在model层提供接口 @classmethod，返回所有有效的评论
+    + 在view层把commentform和评论的数据传递到模板
+    + 在detail.html 中添加评论模块
+    + 在comment/view.py中新增一个view
 
+    + 添加模板comment/result.html(评论结果页)
+    + 添加url
 
+    

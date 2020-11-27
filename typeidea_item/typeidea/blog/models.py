@@ -112,12 +112,13 @@ class Post(models.Model):
     owner = models.ForeignKey(User,verbose_name='作者')
     created_time = models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
     
-    # 每个model中都定义一个Meta类属性，作用是配置Model属性
+    # 模型的元数据，指的是“除了字段外的所有内容”，例如排序方式、数据库表名、人类可读的单数或者复数名等等。
     # 配置展示名称为文章，排序规则根据id降序排序
     class Meta:
         verbose_name = verbose_name_plural = '文章'
         ordering = ['-id'] # 根据id降序排列
     
+    # 在model层定义的接口，返回有标签的状态正常的文章
     @staticmethod
     def get_by_tag(tag_id):
         try:
@@ -150,7 +151,7 @@ class Post(models.Model):
                 # 返回信息
         return post_list, category
     
-    # 获取最新帖子
+    # 接口，返回状态正常的帖子，cls指的是这个类本身
     @classmethod
     def latest_posts(cls):
         queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
