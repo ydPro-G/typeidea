@@ -407,10 +407,10 @@ function view和class-based view的差别，说白了就是函数和类的区别
 
     + 创建cpmment/forms.py（[Meta](https://www.jianshu.com/p/dd7f4a11a7bb)）
     + 在model层提供接口 @classmethod，返回所有有效的评论
-    + 在view层把commentform和评论的数据传递到模板
+    + 在blog/views.py-PostDetailView中添加一个新函数，把commentform和评论的数据传递到模板
     + 在detail.html 中添加评论模块
-    + 在comment/view.py中新增一个view
 
+    + 在comment/view.py中新增一个view
     + 添加模板comment/result.html(评论结果页)
     + 添加url
 
