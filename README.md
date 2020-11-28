@@ -420,4 +420,15 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 编写 typeidea/theme/.../comment/block.html,将评论模块抽象为组件
     + 在detail.html加载{% load comment_block %}
     + 调用模块{% comment_block request.path %}
+
+    + 总结：编写py文件，将相关模块html代码抽出来，其他模板用加载就行
+
+
+### 配置Markdown编写文章的支持
+1. MarkDown 第三方库：mistune
+    + 使用方法：import mistune ; html = mistune.markdown(your_text_string)
+
+2. 评论内容支持
+
+
     
