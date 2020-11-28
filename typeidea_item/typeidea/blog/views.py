@@ -129,15 +129,15 @@ class PostDetailView(CommonViewMixin,DetailView):
     context_object_name = 'post'
     pk_url_kwarg = 'post_id' # url字段为post_id
 
-    # 将评论传递到模板层
-    def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
-        # update:把里面的字典的键/值对更新到字典中
-        context.update({
-            'comment_form': CommentForm,
-            'comment_list': Comment.get_by_target(self.request.path),
-        })
-        return context
+    # 将评论传递到模板层,被comment/templatetags.comment_block.py代替
+    # def get_context_data(self,**kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     # update:把里面的字典的键/值对更新到字典中
+    #     context.update({
+    #         'comment_form': CommentForm,
+    #         'comment_list': Comment.get_by_target(self.request.path),
+    #     })
+    #     return context
 
 
 

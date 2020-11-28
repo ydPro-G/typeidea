@@ -414,4 +414,10 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 添加模板comment/result.html(评论结果页)
     + 添加url
 
+5. 抽象评论模块组件：将评论修改为即插即用的组件
+    + 在commentAPP下新增templatetags目录，新增__init__.py和comment_block.py
+    + 编写comment_block.py 定义标签
+    + 编写 typeidea/theme/.../comment/block.html,将评论模块抽象为组件
+    + 在detail.html加载{% load comment_block %}
+    + 调用模块{% comment_block request.path %}
     
