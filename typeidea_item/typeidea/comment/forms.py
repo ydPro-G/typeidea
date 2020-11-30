@@ -1,8 +1,11 @@
 # 文件： comment/forms.py
 from django import forms
+import mistune
 
 from .models import Comment
 
+
+# 处理表单，验证表单
 class CommentForm(forms.ModelForm):
     nickname = forms.CharField(
         label='昵称',
@@ -45,6 +48,8 @@ class CommentForm(forms.ModelForm):
         if len(content) < 10:
             # 抛出异常，验证错误
             raise forms.ValidationError('内容太短了呢~')
+        # 写入的时候使用markdown语法
+        content = mistune.markdown(content)
         return content
     
     # 模型的元数据

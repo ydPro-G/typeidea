@@ -428,7 +428,26 @@ function view和class-based view的差别，说白了就是函数和类的区别
 1. MarkDown 第三方库：mistune
     + 使用方法：import mistune ; html = mistune.markdown(your_text_string)
 
-2. 评论内容支持
+2. 评论内容支持Markdown
+    + 评论到展示的流程：填写评论，提交表单->comment/forms.py--CommentForm处理表单->验证通过->保存数据到instance->instance.save方法把数据保存到数据库->用户刷新页面->通过comment_block模板自定义标签获取并展示数据
+
+    + 在写数据的时候进行转换，修改clean_conntent方法，在return content之间增加content = mistune.markdown(content)
+    + 写完这句语法后HTML代码直接展示到页面，这时需要手动关闭Django模板自动转码功能
+    + 关闭自动转码:comment/block.html代码{{ comment.content }}位置上下增加autoescape off 
+
+3. 文章正文使用Markdown
+    + 在Model/Post中新增字段content_html,储存Markdown处理后的内容，修改完model后迁移数据库
+    + Post重写save方法
+    + 在模板中使用content_html代替content
+
+4. 配置代码高亮
+    + 代码高亮需要使用htghlight.js
+    + 修改blog/base.html,在</head>上新增一个新的block块，让子模版来填充数据
+    + 在blog/detail.html{% block main %}上面新增代码
+
+5. 一般来说script代码应该放到最后，这是为了防止浏览器加载JavaScript时页面停止渲染，用户等待时间过长。
+
+
 
 
     

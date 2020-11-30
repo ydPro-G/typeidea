@@ -2,8 +2,16 @@
 
 <!--extends非导航页面，开头引入父模板路径-->
 {% extends "./base.html" %}
-{% load comment_block %} <!--加载文件-->
+{% load comment_block %} <!--加载评论文件-->
 {% block title %} {{ post.title }} {% endblock %}
+
+<!--代码高亮子模块-->
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.bootcss.com/highliht.js/9.12.0/styles/googlecode.min.css">
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js">
+</script>
+<script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
 
 {% block main %}
     {% if post %}
@@ -15,7 +23,11 @@
     </div>
     <hr/>
     <p>
-        {{ post.content }}
+        <!--关闭自动转码-->
+        {% autoescape off %}
+        <!--拿的是models.py---Post类的数据-->
+        {{ post.content_html }}
+        {% endautoescape %}
     </p>
     {% endif %}
 

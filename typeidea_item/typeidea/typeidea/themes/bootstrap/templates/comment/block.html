@@ -11,7 +11,10 @@
                 <span>{{ comment.created_time }}</span>
             </div>
             <div class="comment-content">
+                <!--关闭自动转码-->
+                {% autoescape off %}
                 {{ comment.content }}
+                {% endautoescape %}
             </div>
         </li>
         {% endfor %}

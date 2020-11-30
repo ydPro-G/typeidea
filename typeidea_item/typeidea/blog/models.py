@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+import mistune
 
 # Create your models here.
 # 博客内容相关的模型
@@ -111,6 +112,8 @@ class Post(models.Model):
     tag = models.ForeignKey(Tag,verbose_name='标签')
     owner = models.ForeignKey(User,verbose_name='作者')
     created_time = models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
+    # 存储markdown处理后的内容，允许有空白，但是不允许编辑
+    content_html = models.TextField(verbose_name='正文html代码', blank=True, editable=False)
     
     # 模型的元数据，指的是“除了字段外的所有内容”，例如排序方式、数据库表名、人类可读的单数或者复数名等等。
     # 配置展示名称为文章，排序规则根据id降序排序
@@ -163,6 +166,10 @@ class Post(models.Model):
         # 使用only接口只展示title和id
         return cls.objects.all(status=STATUS_NORMAL).only('title', 'id').order_by('-pv')
         # return cls.objects.filter(status=STATUS_NORMAL).order_by('-pv')
+    
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)
+        super().save(*args, **kwargs)
 
 
 
