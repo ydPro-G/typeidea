@@ -140,6 +140,18 @@
 5. 根据url设置然后看看view配置后的页面
 
 
+### middleware完整接口：
+1. process_request:请求来到middleware中时进入的第一个方法，可以在这里做校验，有两个返回值HttpResponse or None，返回HttpResponse就返回了，返回None执行其他方法
+
+2. process_view:在process_request之后执行，统计view相关信息，返回值跟process_request一样，如果返回None，那么Django帮你执行view函数
+
+3. process_template_response:执行完上面的方法，并且Django帮我们执行完view，拿到最终的response后，如果使用了模板的response就会来到这个方法，可以对response做操作，对header的修改/增加
+
+4. process_response:所有流程处理完来到这个方法，逻辑和process_template_response一样，只是process_template_response针对带有模板的response的处理
+
+5. process_exception:发生异常进入这个方法，可以返回一个带有异常信息的HttpResponse，或者直接返回None不处理
+
+
 
 
 
@@ -406,6 +418,7 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 使用python manage.py migrate 使数据库状态与修改完的model状态同步
 
     + 创建cpmment/forms.py（[Meta](https://www.jianshu.com/p/dd7f4a11a7bb)）
+    + 传统：需要Form来提交数据，还是通过Ajax的方式提交数据到后端，Form都很好用，可以比较优雅的处理和校验来自外部的数据
     + 在model层提供接口 @classmethod，返回所有有效的评论
     + 在blog/views.py-PostDetailView中添加一个新函数，把commentform和评论的数据传递到模板
     + 在detail.html 中添加评论模块
@@ -446,6 +459,37 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 在blog/detail.html{% block main %}上面新增代码
 
 5. 一般来说script代码应该放到最后，这是为了防止浏览器加载JavaScript时页面停止渲染，用户等待时间过长。
+
+
+
+
+### 增加访问统计：文章访问量的统计
+1. 如何统计？
+    + 基于当次访问后端实时处理
+    + 基于当次访问后端延迟处理---Celery(分布式任务队列)
+        + 异步：当前需要执行某种操作，但是我自己不执行，让别人帮忙执行
+    + 前端通过JavaScript埋点或者img标签来统计
+    + 基于Nginx日志分析来统计
+
+2. **怎么知道用户已经访问过某篇文章？：Web系统针对不同用户提供不同服务**
+    + 1.根据用户IP和浏览器类型等一些信息生成MD5标记：用户会重合，ip重合
+    + 2. 系统生成唯一的用户id，将其放置到用户cookie中：用户换浏览器产生新用户
+    + 3. 用户登录
+
+
+3. 文章访问统计分析：基于当次访问后端实时处理
+    + 连续刷页面不累计算PV
+    + UV根据日期来处理
+    + 根据系统生成的用户id来标记用户
+
+4. 实现面对的问题：
+    + 如何生成唯一id：使用python内置uuid库生成
+    + 在哪一步给用户配置id：越早越好，放在middleware中来做
+    + 使用什么缓存：使用Django提供的韩村节后
+
+5. 实现文章访问统计
+    + blogAPP新建middleware，新建__init__.py和user_id.py
+
 
 
 
