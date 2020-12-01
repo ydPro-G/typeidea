@@ -140,7 +140,7 @@
 5. 根据url设置然后看看view配置后的页面
 
 
-### middleware完整接口：
+### middleware完整接口：Django的middleware在项目启动时会被初始化接受请求后根据settings中的MIDDLEWARE配置顺序挨个调用，传递request做参数
 1. process_request:请求来到middleware中时进入的第一个方法，可以在这里做校验，有两个返回值HttpResponse or None，返回HttpResponse就返回了，返回None执行其他方法
 
 2. process_view:在process_request之后执行，统计view相关信息，返回值跟process_request一样，如果返回None，那么Django帮你执行view函数
@@ -487,8 +487,13 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 在哪一步给用户配置id：越早越好，放在middleware中来做
     + 使用什么缓存：使用Django提供的韩村节后
 
-5. 实现文章访问统计
+5. **实现文章访问统计：记录uid，赋值，记录**
     + blogAPP新建middleware，新建__init__.py和user_id.py
+    + user_id.py:接受请求，生成uid，把uid赋值给request对象，返回response设置cookie，设置为httponly(only服务端)
+    + 在setting/base.py中配置MIDDLEWARE的第一行，这样后面的request都带uid属性
+    + 完善view层逻辑，在PostDetailView新增一个方法专门处理PV和UV统计，可以直接使用Django cache接口
+    + 在实际项目中避免用户在请求数据过程中进行写数据
+    + 根据统计进行排序，使用hot_posts方法
 
 
 

@@ -1,8 +1,10 @@
-from django.db.models import Q
+from datetime import date
+from django.db.models import Q,F
 from django.shortcuts import render
 from django.http import HttpResponse 
 from django.views.generic import DetailView,ListView
 from django.shortcuts import get_object_or_404
+from django.core.cache import cache # 缓存功能
 
 from comment.forms import CommentForm
 from comment.models import Comment
@@ -61,6 +63,8 @@ from .models import Post, Category,Tag
 #     # update:把里面的字典的键/值对更新到字典中
 #     context.update(Category.get_navs())
 #     return render(request,'blog/detail.html', context=context)
+
+
 
 
 
@@ -128,6 +132,40 @@ class PostDetailView(CommonViewMixin,DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id' # url字段为post_id
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        self.handle_visited() # 访问句柄
+        return response
+
+    # 统计pv，uv.判断有没有缓存，有+1，elif避免执行两次更新操作
+    def handle_visited(self):
+        increase_pv = False
+        increase_uv = False
+        uid = self.request.uid
+        pv_key = 'pv:%s:%s' % (uid, self.request.path)
+        uv_key = 'uv:%s:%s:%s' % (uid, str(date.today()), self.request.path)
+        # cache获取
+        if not cache.get(pv_key):
+            increase_pv = True
+            # cache设置，缓存时间为1分钟，超过一分钟就是删除缓存
+            cache.set(pv_key, 1, 1*60)# 1分钟 有效
+        
+        if not cache.get(uv_key):
+            increase_uv = True
+            cache.set(uv_key, 1, 24*60*60) # 24小时有效
+
+        if increase_pv and increase_uv:
+            # F；直接执行SQL语句，增加。优化ORM操作数据库
+            # F表达式并不会马上从数据库中获取数据，而是在生成SQL语句的时候，动态的获取传给F表达式的值。
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1,
+            uv=F('uv') + 1)
+        elif increase_pv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1)
+        elif increase_uv:
+            Post.objects.filter(pk=self.object.id).update(uv=F('uv') + 1)
+
+
 
     # 将评论传递到模板层,被comment/templatetags.comment_block.py代替
     # def get_context_data(self,**kwargs):
