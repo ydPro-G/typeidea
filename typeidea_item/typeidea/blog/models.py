@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 import mistune
+from django.utils.functional import cached_property
 
 # Create your models here.
 # 博客内容相关的模型
@@ -166,6 +167,11 @@ class Post(models.Model):
         # 使用only接口只展示title和id
         return cls.objects.all(status=STATUS_NORMAL).only('title', 'id').order_by('-pv')
         # return cls.objects.filter(status=STATUS_NORMAL).order_by('-pv')
+    
+    # 把返回的数据绑到实例上,values_list使用不了暂时隐藏
+    # @cached_property 
+    # def tags(self):
+    #     return ','.join(self.tag.values_list('name', flat=True))
     
     def save(self, *args, **kwargs):
         self.content_html = mistune.markdown(self.content)

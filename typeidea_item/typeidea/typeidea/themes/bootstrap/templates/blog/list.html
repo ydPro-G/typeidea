@@ -1,13 +1,15 @@
 <!--首页-->
 {% extends "./base.html" %}
+
 {% block title %}
-    {% if tag %}
-    标签页： {{ tag.name }}
-    {% elif category %}
-    分类页: {{ category.name }}
-    {% else %}
-    首页
-    {% endif %}
+{% if tag %}
+标签页：{{ tag.name }}
+{% endif %}
+
+{% if category %}
+分类页：{{ category.name }}
+{% endif %}
+
 {% endblock %}
 
 {% block main %}
@@ -20,7 +22,7 @@
             <!--url 'url_name' url_p<参数>-->
             <span class="card-link">作者:<a href="{% url 'author' post.owner_id %}">{{ post.owner.username }}</a></span>
             <span class="card-link">分类:<a href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a></span>
-            <span class="card-link">标签页：
+            <span class="card-link">标签：
                 {% for tag in post.tag.all %}
                 <a href="{% url 'tag-list' tag.id %}">{{ tag.name }}</a>
                 {% endfor %}

@@ -497,6 +497,25 @@ function view和class-based view的差别，说白了就是函数和类的区别
 
 
 
+### 配置RSS和sitemap：提供一个RSS和sitemap输出接口
+RSS：简易信息聚合
+sitemap：提供给搜索引擎
+
+1. 实现RSS输出
+    + 使用Django的RSS模块，实现RSS输出
+    + 在blog目录下新增rss.py
+
+2. 实现sitemap
+    + 输出文章列表
+    + 在blog目录下新增sitemap.py
+    + 编写对应模板的themes/bootstrap/templates/sitemap.xml
+    + url.item.tags 做下支持，Post模型tag多对多关联，增加一个属性,blog/models.py
+
+3. 配置RSS和sitemap的urls.py
+
+
+
+
 
 
     
