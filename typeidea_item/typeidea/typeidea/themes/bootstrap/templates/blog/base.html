@@ -1,5 +1,4 @@
 {% load static %}
-{% load cache %}
  <!DOCTYPE html>
 
 <!--首页-->
@@ -63,13 +62,13 @@
                 {% block main %} 
                 {% endblock %}
                 </div>
-
+                
                 <div class="col-3">
                     {% block sidebar %} <!--侧边栏基类-->
                         {% for sidebar in sidebars %}
                         <div class="card sidebar">
                             <div class="card-body">
-                                <h4 class="card-title">{{ sidebar.title }}</h4>
+                                <h4 class="card-title">{{ sidebar.title}}</h4>
                                 <p>
                                     {{ sidebar.content_html }}<!--sidebar.content指的是侧边栏的内容字段-->
                                 </p>

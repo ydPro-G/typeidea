@@ -518,4 +518,26 @@ sitemap：提供给搜索引擎
 
 
 
+## 使用第三方插件增强管理后台
+use xadmin，django-autocomplete-light and django-ckeditor 增强管理后台
+
+xadmin 是admin的升级版，使用时需要注意xadmin版本
+
+### xadmin介绍使用
+1. xadmin介绍
+    + Bootstrap的前端效果和组件
+    + 灵活的插件机制
+    + 更好用的过滤功能
+    + 多种类型的数据导出功能
+    + 自定义书签
+
+2. 安装最新的xadmin
+    +
+
+
+
+
+
+
+
     
