@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from .forms import CommentForm
 # Create your views here.
 
+# 评论
 class CommentView(TemplateView):
     http_method_names = ['post']
     template_name = 'comment/result.html'

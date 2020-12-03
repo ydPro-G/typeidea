@@ -80,11 +80,14 @@ class CommonViewMixin:
         context.update(Category.get_navs())
         return context
 
-# 首页函数
-class IndexView(ListView):
-    queryset = Post.latest_posts() #最新帖子
-    paginate_by = 5  # 一页5个
-    context_object_name = 'post_list' # 如果不设置此项，在模板中需要使用object_list变量
+# 首页函数:决定首页展示什么
+class IndexView(CommonViewMixin, ListView):
+    # 展示侧边，分类
+    queryset = Post.objects.filter(status=Post.STATUS_NORMAL)\
+        .select_related('owner')\
+        .select_related('category')
+    paginate_by = 5
+    context_object_name = 'post_list'
     template_name = 'blog/list.html'
 
 # 分类函数
@@ -124,7 +127,7 @@ class TagView(IndexView):
         queryset = super().get_queryset()
         # self.kwargs中的数据其实是从URL定义中拿到的
         tag_id = self.kwargs.get('tag_id')
-        return queryset.filter(tag_id=tag_id)
+        return queryset.filter(tag__id=tag_id)
 
 # 文章详情页，也展示评论
 class PostDetailView(CommonViewMixin,DetailView):
