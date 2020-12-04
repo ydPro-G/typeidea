@@ -537,7 +537,7 @@ django对于外键或者多对多字段的处理比较粗暴，一股脑的加�
 
 2. 引入插件:pip install ....
 
-3. 配置installed apps，增加'dal' 'dal_select2'
+3. 配置settings.py/installed apps，增加'dal' 'dal_select2'
 
 4. 配置后端查询逻辑
     + typeidea/typeidea目录新建模块autocomplete.py
@@ -545,6 +545,23 @@ django对于外键或者多对多字段的处理比较粗暴，一股脑的加�
     + 编写autocomplete.py
     + 配置url
     + 配置展示逻辑：使用autocomplete-light提供的Form层组件接入后端接口（编写blog/adminforms.py ）
+
+
+
+
+### 使用django-ckeditor开发富文本编辑器:引入编辑器插件
+
+
+1. 安装django-ckeditor
+
+2. 配置settings.py/APP
+
+3. 配置blog/adminforms.py---content
+
+4. 配置settings/base.py，新增配置CKEDITOR_CONFIGS
+
+
+### 配置图片
 
 
 
