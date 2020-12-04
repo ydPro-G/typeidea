@@ -418,7 +418,7 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 使用python manage.py migrate 使数据库状态与修改完的model状态同步
 
     + 创建cpmment/forms.py（[Meta](https://www.jianshu.com/p/dd7f4a11a7bb)）
-    + 传统：需要Form来提交数据，还是通过Ajax的方式提交数据到后端，Form都很好用，可以比较优雅的处理和校验来自外部的数据
+    + 不论是传统需要Form来提交数据，还是通过Ajax的方式提交数据到后端，Form都很好用，可以比较优雅的处理和校验来自外部的数据
     + 在model层提供接口 @classmethod，返回所有有效的评论
     + 在blog/views.py-PostDetailView中添加一个新函数，把commentform和评论的数据传递到模板
     + 在detail.html 中添加评论模块
@@ -521,19 +521,30 @@ sitemap：提供给搜索引擎
 ## 使用第三方插件增强管理后台
 use xadmin，django-autocomplete-light and django-ckeditor 增强管理后台
 
-xadmin 是admin的升级版，使用时需要注意xadmin版本
+### xadmin不写了，已停止更新。
 
-### xadmin介绍使用
-1. xadmin介绍
-    + Bootstrap的前端效果和组件
-    + 灵活的插件机制
-    + 更好用的过滤功能
-    + 多种类型的数据导出功能
-    + 自定义书签
 
-2. 安装最新的xadmin
-    +
 
+
+### 使用django-autocomplete-light优化性能
+django对于外键或者多对多字段的处理比较粗暴，一股脑的加载到页面，生成一个select标签，如果数据多了一次加载到页面上耗时太多。所以需要优化。
+
+1. django-autocomplete-light 介绍
+    + 轻量级自动补全插件
+    + 本质上属于懒加载，外键关联数据并不会随着页面加载而加载，等到输入搜索时再加载
+    + 原理：封装好一个接口，查询要处理的数据，提供前端组件，用户输入时实现接口查询，拿到数据，展示到页面
+
+
+2. 引入插件:pip install ....
+
+3. 配置installed apps，增加'dal' 'dal_select2'
+
+4. 配置后端查询逻辑
+    + typeidea/typeidea目录新建模块autocomplete.py
+    + autocomplete.py用来配置所有需要自动补全的接口，自动补全的view层
+    + 编写autocomplete.py
+    + 配置url
+    + 配置展示逻辑：使用autocomplete-light提供的Form层组件接入后端接口（编写blog/adminforms.py ）
 
 
 

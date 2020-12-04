@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'blog', # 文章，标签，分类
     'config', # 友链，链接
     'comment', # 评论
+    
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dal',
+    'dal_select2',
 ]
 
 MIDDLEWARE = [
