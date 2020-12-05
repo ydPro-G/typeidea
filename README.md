@@ -569,6 +569,15 @@ django对于外键或者多对多字段的处理比较粗暴，一股脑的加�
 
 
 
+### 自定义存储以及水印
+默认存储方式是文件存储，可以根据需求定制
+
+1. 定制方式：继承django.core.files.storage.Storage,然后实现几个接口，可以存储到本地文件系统or网络
+
+2. 在urls.py同级目录下新增文件storage.py,继承FileStorage，重写save方法，处理图片
+
+
+
 
 
 
