@@ -50,9 +50,11 @@ urlpatterns = [
     # RSS and sitemap
     url(r'^rss|feed', LatestPostFeed(), name='rss'),
     url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
-    # url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(),
-    # name='category-autocomplete'),
-    # url(r'^tag-autocomplete/$', TagAutocomplete.as_view(),
-    # name='tag-autocomplete'),
+    
+    # 接受文件接口
+    # url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+     
+    # url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(),name='category-autocomplete'),
+    # url(r'^tag-autocomplete/$', TagAutocomplete.as_view(),name='tag-autocomplete'),
 
-]
+]# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 配置图片资源访问

@@ -48,7 +48,14 @@ INSTALLED_APPS = [
     # 'dal',
     # 'dal_select2',
     'ckeditor',
+
+    # 'ckeditor_uploader',  图片添加app
 ]
+
+# 图片配置上传的路径
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# CKEDITOR_UPLOAD_PATH = "article_images"
 
 MIDDLEWARE = [
     # 新加的middleware，用户附加uid信息

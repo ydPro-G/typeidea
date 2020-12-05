@@ -562,6 +562,12 @@ django对于外键或者多对多字段的处理比较粗暴，一股脑的加�
 
 
 ### 配置图片
+1. 在installed_app中增加app-ckeditor_uploader(记得配置CKEDITOR_UPLOAD_PATH)
+2. 修改blog/adminforms.py
+3. 配置上传路径settings/base.py
+4. 修改url
+
+
 
 
 
