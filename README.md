@@ -583,6 +583,12 @@ django对于外键或者多对多字段的处理比较粗暴，一股脑的加�
 
 
 ## 使用django-rest-framework
+把所有被请求的实体当作资源，通过http自带方法(GET,HEAD,POST,PUT,DELETE)来进行对应的增删改查等操作。
+
+GET:获取资源；POST：新增数据；PUT：更新数据；DELETE删除数据。
+
+默认接受数据格式：JSON，也可以通过HTTP请求header中的content-type来设置默认格式
+
 RestFramework是一个能快速为我们提供API接口，方便我们编程的框架。API是后端编程人员写的，为了让前端拿数据的一个接口，通常就是以url的形式存在。
 
 
