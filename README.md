@@ -630,6 +630,13 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 
 ### 接口需求及django-rest-framework介绍
+1. 需求：开发一套接口，提供分类，标签 数据
+    + 配置一套RESTful接口，输出所有文章，其功能跟Web系统提供的类似。具体包含（最新文章列表，分类列表，根据分类获取文章，标签列表，根据标签获取文章）
+
+2. 快速上手
+    + 安装：pip install django-rest-framework==3.8.2
+    + 设置settings.py中的APP
+
 
 
 
