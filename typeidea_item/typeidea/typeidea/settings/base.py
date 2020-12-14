@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework', # 前后端分离插件
     # 自动补全插件，xadmin不能用
     # 'dal',
     # 'dal_select2',
