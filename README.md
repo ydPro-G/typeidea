@@ -637,6 +637,7 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
     + 安装：pip install django-rest-framework==3.8.2
     + 设置settings.py中的APP
     + 在blogApp下新增serializers.py文件
+    + 新建view层逻辑，在blog下新建apis.py
 
 
 
