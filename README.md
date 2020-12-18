@@ -638,6 +638,18 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
     + 设置settings.py中的APP
     + 在blogApp下新增serializers.py文件
     + 新建view层逻辑，在blog下新建apis.py
+    + 在urls.py中增加代码
+    + 访问http://127.0.0.1:800/api/post/?format=json
+
+3. api_view
+    + 是django-rest-framework创建的帮我们把View转换为API View的装饰器
+    + 提供可选参数api_view(['GET', 'POST'])限定请求的类型
+
+4. ListCreateAPIView(class-based view):指定queryset，配置好用来序列化的类，就可以实现一个数据列表页。
+
+5. 每一个资源都需要CRUD操作，如果一个个去添加，很麻烦，django-rest-framework提供了更上层的抽象ViewSet，把这些逻辑都封装起来，让我们在一个类中就能完成所有方法的维护。
+    + 重新编写apis.py中的代码
+
 
 
 

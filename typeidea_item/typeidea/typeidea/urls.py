@@ -27,6 +27,7 @@ from blog.views import (
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
+from blog.apis import post_list, PostList
 # from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 
@@ -50,6 +51,9 @@ urlpatterns = [
     # RSS and sitemap
     url(r'^rss|feed', LatestPostFeed(), name='rss'),
     url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+
+    # url(r'^api/post/', post_list, name='post-list'),
+    url(r'^api/post', PostList.as_view(), name='post-list'),
     
     # 接受文件接口
     # url(r'^ckeditor/', include('ckeditor_uploader.urls')),
