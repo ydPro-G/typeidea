@@ -649,6 +649,22 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 5. 每一个资源都需要CRUD操作，如果一个个去添加，很麻烦，django-rest-framework提供了更上层的抽象ViewSet，把这些逻辑都封装起来，让我们在一个类中就能完成所有方法的维护。
     + 重新编写apis.py中的代码
+    + 在urls.py中增加代码
+    + **这样改造完后就有了多个接口，根据只读的需求，有了list和detail接口**
+        + http://127.0.0.1:8000/api/post/
+        + http://127.0.0.1:8000/api/post/<post_id>/
+
+6. 如果需要reverse操作，可以通过reverse('api:post-list')获取到**文章列表的接口**，通过reverser('api:post-detail', args=[1])获取对应**文章详情的接口**。
+    
+    + 在运行状态下，可以在ViewSet的某个方法中，通过reverse_action方法获取对应的url。
+
+    + 如果使用了namespace配置，就需要在router中调整。去掉`namespace="api"`,通过base_name来区分不同的URL名称。
+
+    + 在运行状态下的命令：通过self.reverse_action('list')获取对应的列表接口；self.reverse_action('detail', args=[<id>])来获取对应文章的详细接口地址。
+
+
+
+    
 
 
 

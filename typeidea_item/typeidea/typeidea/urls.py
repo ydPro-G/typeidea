@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.sitemaps import views as sitemap_views
+from rest_framework.routers import DefaultRouter
+from django.conf.urls import include
 
 
 from .custom_site import custom_site
@@ -27,11 +29,14 @@ from blog.views import (
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
-from blog.apis import post_list, PostList
+from blog.apis import PostViewSet
 # from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 
-# 三个View post_list post_detail links
+router = DefaultRouter()
+router.register(r'post',PostViewSet,base_name='api-post')
+
+
 urlpatterns = [
     # url(<正则>,<view function>,<默认传递参数，无论什么请求过来都会传递这个参数到view function中>,<url的名称>)
     url(r'^$', IndexView.as_view(), name='index'),
@@ -51,9 +56,17 @@ urlpatterns = [
     # RSS and sitemap
     url(r'^rss|feed', LatestPostFeed(), name='rss'),
     url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+    url(r'^api/', include(router.urls, namespace="api")),
+    
 
-    # url(r'^api/post/', post_list, name='post-list'),
-    url(r'^api/post', PostList.as_view(), name='post-list'),
+
+
+
+
+
+
+
+
     
     # 接受文件接口
     # url(r'^ckeditor/', include('ckeditor_uploader.urls')),
