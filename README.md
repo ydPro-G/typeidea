@@ -629,7 +629,7 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 
 
-### 接口需求及django-rest-framework介绍
+### 1.接口需求及django-rest-framework介绍
 1. 需求：开发一套接口，提供分类，标签 数据
     + 配置一套RESTful接口，输出所有文章，其功能跟Web系统提供的类似。具体包含（最新文章列表，分类列表，根据分类获取文章，标签列表，根据标签获取文章）
 
@@ -663,7 +663,16 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
     + 在运行状态下的命令：通过self.reverse_action('list')获取对应的列表接口；self.reverse_action('detail', args=[<id>])来获取对应文章的详细接口地址。
 
 
+#### 2.配置API docs
+使用django-rest-framework提供的dosc工具生成接口文档
 
+1. 配置urls.py
+2. 安装python包-coreapi
+3. http://127.0.0.1:8000/api/docs/ 打开链接，现在展示的是**自动生成的接口文档**
+
+
+### 生成我们的RESTful接口：以需求为目标编写代码
+1. 区分list和detail
     
 
 
