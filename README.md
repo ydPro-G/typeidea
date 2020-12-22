@@ -151,6 +151,17 @@
 
 5. process_exception:发生异常进入这个方法，可以返回一个带有异常信息的HttpResponse，或者直接返回None不处理
 
+### 单个*的args是一个元组，两个*的kwargs是一个字典，，参数的数量都是任意
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -673,6 +684,18 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 ### 生成我们的RESTful接口：以需求为目标编写代码
 1. 区分list和detail
+    + 调整接口返回数据的格式，文章列表页与文章详情页所需字段不同。需要做的就是为不同接口定义不同的serializer。
+    + 定义序列化的类，编写serializers.py
+        + SlugRelatedField:定义外键数据是否可写（read_only参数）
+        + slug_field：指定用来展示的参数
+        + many=True  多对多（标签与文章）
+    + 定义详情接口需要的类，继承PostSerializer在fields中增加content_html
+
+    + 重写获取详情数据的接口，指定serializer_class,所有数据通过这个配置进行序列化。
+    + 修改apis.py中的接口代码
+
+    
+
     
 
 

@@ -26,10 +26,20 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
 from .models import Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostDetailSerializer
 
+# 文章列表class-based view
 class PostViewSet(viewsets.ModelViewSet):
+    # 指定序列化的类，这个类数据集是正常的文章
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=Post.STATUS_NORMAL)
     # permission_classes = [IsAdminUser]  # 用来做数据写入时(POST,PUT,DELETE操作)的权限校验
+
+    # 文章详情view
+    # 单个*的args是一个元组，两个*的kwargs是一个字典，，参数的数量都是任意
+    def retrieve(self, request, *args, **kwargs):
+        self.serializer_class = PostDetailSerializer
+        return super().retrieve(request, *args, **kwargs)
+    
+
  
