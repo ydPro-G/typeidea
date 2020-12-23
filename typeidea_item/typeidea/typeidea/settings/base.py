@@ -161,3 +161,12 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': 'codesnippet', # 配置代码插件
     },
 }
+
+# rest框架默认分页类
+
+REST_FRAMEWORK = {
+    # 分页类型
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # # 每页多少条
+    'PAGE_SIZE': 5,
+}

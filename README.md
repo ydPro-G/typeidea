@@ -683,16 +683,28 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 
 ### 生成我们的RESTful接口：以需求为目标编写代码
-1. 区分list和detail
-    + 调整接口返回数据的格式，文章列表页与文章详情页所需字段不同。需要做的就是为不同接口定义不同的serializer。
-    + 定义序列化的类，编写serializers.py
-        + SlugRelatedField:定义外键数据是否可写（read_only参数）
-        + slug_field：指定用来展示的参数
-        + many=True  多对多（标签与文章）
-    + 定义详情接口需要的类，继承PostSerializer在fields中增加content_html
+####  区分list和detail
+1. 调整接口返回数据的格式，文章列表页与文章详情页所需字段不同。需要做的就是为不同接口定义不同的serializer。
+2. 定义序列化的类，编写serializers.py
+    + SlugRelatedField:定义外键数据是否可写（read_only参数）
+    + slug_field：指定用来展示的参数
+    + many=True  多对多（标签与文章）
+3. 定义详情接口需要的类，继承PostSerializer在fields中增加content_html
 
-    + 重写获取详情数据的接口，指定serializer_class,所有数据通过这个配置进行序列化。
-    + 修改apis.py中的接口代码，在retrieve方法中重新设置serializer_class的值，达到不同接口使用不同serializer的目的
+4. 重写获取详情数据的接口，指定serializer_class,所有数据通过这个配置进行序列化。
+5. 修改apis.py中的接口代码，在retrieve方法中重新设置serializer_class的值，达到不同接口使用不同serializer的目的
+
+#### 实现分页：在setting中设置新的rest_framework的分页类型，每页多少条
+1. 数据量大的情况下要分页返回数据
+2. 配置分页,其一是在settings中增加配置（REST_FRAMEWORK）
+    + **分页选项**： 1.rest_framework.pagination.PageNumberPagination--当前几页，每页多少条
+    + **分页选项**： 2.rest_framework.pagination.LimitOffsetPagination--基于偏移量和Limit的分页，当前位置几条，还需要几条。
+    + **分页选项**： 3.rest_framework.pagination.CursorPagination--防止用户填写任意的页码和每页数据量来获取数据
+
+
+
+
+### 实现Category接口
 
     
 
