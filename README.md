@@ -682,13 +682,16 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 3. http://127.0.0.1:8000/api/docs/ 打开链接，现在展示的是**自动生成的接口文档**
 
 
-### 生成我们的RESTful接口：以需求为目标编写代码
+### 实现文章接口的RESTful接口
 ####  区分list和detail
 1. 调整接口返回数据的格式，文章列表页与文章详情页所需字段不同。需要做的就是为不同接口定义不同的serializer。
+
 2. 定义序列化的类，编写serializers.py
+    + (modelSerializer的作用)[https://www.cnblogs.com/oklizz/p/11278510.html]
     + SlugRelatedField:定义外键数据是否可写（read_only参数）
     + slug_field：指定用来展示的参数
     + many=True  多对多（标签与文章）
+
 3. 定义详情接口需要的类，继承PostSerializer在fields中增加content_html
 
 4. 重写获取详情数据的接口，指定serializer_class,所有数据通过这个配置进行序列化。
@@ -704,7 +707,16 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 
 
-### 实现Category接口
+### 实现Category接口---编写接口-->编写视图-->编写url
+1. 在serializers.py中增加代码---编写接口
+
+2. 在apis.py中新增代码---编写视图
+
+3. 在urls.py中新增代码 ---编写url
+
+
+### 获取分类下的文章列表
+思路：在postViewSet中通过获取url上query中的category参数，重写雷士get_queryset方法实现过滤
 
     
 

@@ -170,3 +170,4 @@ REST_FRAMEWORK = {
     # # 每页多少条
     'PAGE_SIZE': 5,
 }
+

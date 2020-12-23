@@ -30,12 +30,15 @@ from blog.views import (
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
-from blog.apis import PostViewSet
+from blog.apis import PostViewSet, CategoryViewSet
 # from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 
 router = DefaultRouter()
+# 文章
 router.register(r'post',PostViewSet,base_name='api-post')
+# 分类
+router.register(r'category', CategoryViewSet, base_name='api-category')
 
 
 urlpatterns = [
@@ -57,7 +60,9 @@ urlpatterns = [
     # RSS and sitemap
     url(r'^rss|feed', LatestPostFeed(), name='rss'),
     url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+    # 整个接口 router
     url(r'^api/', include(router.urls, namespace="api")),
+    # 接口文档url
     url(r'^api/docs/', include_docs_urls(title='typeidea apis')),
     
 

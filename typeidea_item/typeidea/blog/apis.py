@@ -25,8 +25,11 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
-from .models import Post
-from .serializers import PostSerializer, PostDetailSerializer
+from .models import Post, Category
+from .serializers import (
+    PostSerializer,PostDetailSerializer,
+    CategorySerializer,
+)
 
 # 文章列表class-based view
 class PostViewSet(viewsets.ModelViewSet):
@@ -40,6 +43,14 @@ class PostViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         self.serializer_class = PostDetailSerializer
         return super().retrieve(request, *args, **kwargs)
+    
+
+# 分类视图
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    # 指定序列化的类
+    serializer_class = CategorySerializer
+    # 指定数据集是状态正常分类
+    queryset = Category.objects.filter(status=Category.STATUS_NORMAL)
     
 
  
