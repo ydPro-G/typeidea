@@ -692,7 +692,7 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
     + 定义详情接口需要的类，继承PostSerializer在fields中增加content_html
 
     + 重写获取详情数据的接口，指定serializer_class,所有数据通过这个配置进行序列化。
-    + 修改apis.py中的接口代码
+    + 修改apis.py中的接口代码，在retrieve方法中重新设置serializer_class的值，达到不同接口使用不同serializer的目的
 
     
 
