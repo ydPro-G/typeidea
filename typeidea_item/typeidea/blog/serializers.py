@@ -1,4 +1,4 @@
-from rest_framework import serializers # 前后端分离框架
+from rest_framework import serializers, pagination # 前后端分离框架
 
 from .models import Post, Category
 
@@ -50,5 +50,34 @@ class CategorySerializer(serializers.ModelSerializer):
             'id', 'name', 'created_time',
         )
     
+# 分类详情页接口
+class CategoryDetailSerializer(CategorySerializer):
+    # serializerMethodField把posts字段获取的内容映射到paginated_posts方法上
+    posts = serializers.SerializerMethodField('paginated_posts')
 
+    # 实现对某个分类下文章列表的获取和分页，并最终返回分页信息
+    def paginated_posts(self, obj):
+        # posts对应的数据需要通过paginated_posts获取
+        posts = obj.post_set.filter(status=Post.STATUS_NORMAL)
+        paginator = pagination.PageNumberPagination()
+        page = paginator.paginate_queryset(posts, self.context['request'])
+        serializer = PostSerializer(page, many=True, context={'request': 
+        self.context['request']})
+        return {
+            # 数字
+            'count': posts.count(),
+            # 详细信息
+            'results': serializer.data,
+            # 上一个分类
+            'previous': paginator.get_previous_link(),
+            # 下一个分类
+            'next': paginator.get_next_link(),
+        }
+    
+    # 
+    class Meta:
+        model = Category
+        fields = (
+            'id', 'name', 'created_time', 'posts'
+        )
 

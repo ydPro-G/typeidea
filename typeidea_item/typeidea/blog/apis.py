@@ -28,11 +28,12 @@ from rest_framework.permissions import IsAdminUser
 from .models import Post, Category
 from .serializers import (
     PostSerializer,PostDetailSerializer,
-    CategorySerializer,
+    CategorySerializer, CategoryDetailSerializer
 )
 
 # 文章列表class-based view
 class PostViewSet(viewsets.ModelViewSet):
+    """提供文章接口"""
     # 指定序列化的类，这个类数据集是正常的文章
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=Post.STATUS_NORMAL)
@@ -43,6 +44,13 @@ class PostViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         self.serializer_class = PostDetailSerializer
         return super().retrieve(request, *args, **kwargs)
+
+    # 通过PostViewSet上的URL的query获取category参数
+    def filter_queryset(self,queryset):
+        category_id = self.request.query_params.get('category')
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+        return queryset
     
 
 # 分类视图
@@ -51,6 +59,13 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CategorySerializer
     # 指定数据集是状态正常分类
     queryset = Category.objects.filter(status=Category.STATUS_NORMAL)
+
+    # 获取分类的详细信息view
+    def retrieve(self, request, *args, **kwargs):
+        self.serializer_class = CategoryDetailSerializer
+        return super().retrieve(request, *args, **kwargs)
+
+
     
 
  

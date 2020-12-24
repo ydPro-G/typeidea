@@ -716,7 +716,12 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 
 ### 获取分类下的文章列表
-思路：在postViewSet中通过获取url上query中的category参数，重写雷士get_queryset方法实现过滤
+思路：在postViewSet中通过获取url上query中的category参数，重写类似get_queryset方法实现过滤。这个方法在django-rest-framework中叫做filter_queryset。
+
+1. 先修改apis.py中PostSerializer，通过filter_queryset方法拿到category参数
+2. 在serializers.py中定义详情页需要的serializer
+3. 再修改apis.py中的CategoryViewSet,添加retrieve
+4. 这时访问分类的详情接口，就可以看到对应的文章列表
 
     
 
