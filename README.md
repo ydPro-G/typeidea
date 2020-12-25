@@ -734,7 +734,7 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
     + 将继承serializers.ModelSerializer改为serializers.Hyper-linkedModelSerializer，然后在Meta的fields配置中新增一个url字段即可
 
     + 为了避免url的name冲突，对所有接口都设定了base_name，因此需要做额外的工作展示URL。
-        + 第一种方法：使用HyperlinkedIdentityField定义要使用的view_name
+        + 第一种方法：使用HyperlinkedIdentityField定义要使用的view_name,这种方法可以不继承HyperlinkedModelSerializer,直接用原来的就可以
         + 第二种方法：通过在Meta中定义extra_kwargs属性
 
 
