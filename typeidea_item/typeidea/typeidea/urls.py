@@ -61,7 +61,7 @@ urlpatterns = [
     url(r'^rss|feed', LatestPostFeed(), name='rss'),
     url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
     # 整个接口 router
-    url(r'^api/', include(router.urls, namespace="api")),
+    url(r'^api/', include(router.urls, namespace="api")),# hyperlinked这里url李的namespace要删掉
     # 接口文档url
     url(r'^api/docs/', include_docs_urls(title='typeidea apis')),
     
