@@ -26,6 +26,8 @@ class PostSerializer(serializers.ModelSerializer):
     )
     created_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
 
+    # url = serializers.HyperlinkedIdentityField(view_name='api-post-detail')
+
     class Meta:
         # 指明序列化器类对应的模型类
         model = Post
