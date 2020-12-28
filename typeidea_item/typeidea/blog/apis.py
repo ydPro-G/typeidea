@@ -25,10 +25,10 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
-from .models import Post, Category
+from .models import Post, Category, Tag
 from .serializers import (
     PostSerializer,PostDetailSerializer,
-    CategorySerializer, CategoryDetailSerializer
+    CategorySerializer, CategoryDetailSerializer, Tagserializer
 )
 
 # 文章列表class-based view
@@ -64,6 +64,13 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         self.serializer_class = CategoryDetailSerializer
         return super().retrieve(request, *args, **kwargs)
+
+
+# 标签视图
+class TagViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = Tagserializer
+    queryset = Tag.objects.filter(status=Tag.STATUS_NORMAL)
+
 
 
     

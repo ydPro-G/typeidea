@@ -1,6 +1,6 @@
 from rest_framework import serializers, pagination # 前后端分离框架
 
-from .models import Post, Category
+from .models import Post, Category, Tag
 
 # 序列化的类,前端需要反序列化
 
@@ -83,3 +83,12 @@ class CategoryDetailSerializer(CategorySerializer):
             'id', 'name', 'created_time', 'posts'
         )
 
+
+
+# 标签接口
+class Tagserializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = (
+            'id', 'name', 'created_time'
+        )

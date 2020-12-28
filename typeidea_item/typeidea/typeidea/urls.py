@@ -30,7 +30,7 @@ from blog.views import (
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
-from blog.apis import PostViewSet, CategoryViewSet
+from blog.apis import PostViewSet, CategoryViewSet, TagViewSet
 # from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 
@@ -39,6 +39,8 @@ router = DefaultRouter()
 router.register(r'post',PostViewSet,base_name='api-post')
 # 分类
 router.register(r'category', CategoryViewSet, base_name='api-category')
+# 标签
+router.register(r'tag', TagViewSet, base_name='api-tag')
 
 
 urlpatterns = [
