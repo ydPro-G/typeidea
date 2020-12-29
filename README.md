@@ -744,6 +744,10 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 2. 在apis.py中新增展示匹配
 3. 在urls.py中新增代码
 
+4. 获取标签下的文章列表
+    + 在PostViewSet中编写函数fulter_queryset获取URL上Query中的tag参数
+    + 修改serializers.py中的代码
+    + 在apis.py中修改TagViewSet，添加retrieve,在retrieve方法中重新设置serializer_class的值，达到不同接口使用不同serializer的目的
 
     
 

@@ -61,6 +61,7 @@ class CategoryDetailSerializer(CategorySerializer):
     def paginated_posts(self, obj):
         # posts对应的数据需要通过paginated_posts获取
         posts = obj.post_set.filter(status=Post.STATUS_NORMAL)
+        # 分页,指定分页方式：当前几页，每页多少条
         paginator = pagination.PageNumberPagination()
         page = paginator.paginate_queryset(posts, self.context['request'])
         serializer = PostSerializer(page, many=True, context={'request': 
@@ -87,8 +88,32 @@ class CategoryDetailSerializer(CategorySerializer):
 
 # 标签接口
 class Tagserializer(serializers.ModelSerializer):
-    class Meta:
+      class Meta:
         model = Tag
         fields = (
             'id', 'name', 'created_time'
+        )
+    
+# 继承标签接口，同时让标签接口也返回这个标签下所有文章资源
+class TagDetailSerializer(Tagserializer):
+    posts = serializers.SerializerMethodField('paginated_posts')
+
+    def paginated_posts(self, obj):
+        posts = obj.post_set.filter(status=Post.STATUS_NORMAL)
+        # 分页,指定分页方式：当前几页，每页多少条
+        paginator = pagination.PageNumberPagination()
+        page = paginator.paginate_queryset(posts, self.context['request'])
+        serializer = PostSerializer(page, many=True,context={'request':
+        self.context['request']})
+        return {
+            'count': posts.count(),
+            'results': serializer.data,
+            'previous': paginator.get_previous_link(),
+            'next': paginator.get_next_link(),
+        }
+
+    class Meta:
+        model = Tag
+        fields = (
+            'id', 'name', 'created_time', 'posts'
         )

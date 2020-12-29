@@ -28,7 +28,7 @@ from rest_framework.permissions import IsAdminUser
 from .models import Post, Category, Tag
 from .serializers import (
     PostSerializer,PostDetailSerializer,
-    CategorySerializer, CategoryDetailSerializer, Tagserializer
+    CategorySerializer, CategoryDetailSerializer, Tagserializer, TagDetailSerializer
 )
 
 # 文章列表class-based view
@@ -51,12 +51,19 @@ class PostViewSet(viewsets.ModelViewSet):
         if category_id:
             queryset = queryset.filter(category_id=category_id)
         return queryset
+        
+        # 获取tag
+        tag_id = self.request.query_params.get('tag')
+        if tag_id:
+            queryset = queryset.filter(tag_id=tag_id)
+
+        return queryset
     
 
 # 分类视图
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    # 指定序列化的类
-    serializer_class = CategorySerializer
+    # 指定序列化的类，# CategorySerializer返回简单数据  CategoryDetailSerializer返回分类下的文章数据
+    serializer_class = CategoryDetailSerializer
     # 指定数据集是状态正常分类
     queryset = Category.objects.filter(status=Category.STATUS_NORMAL)
 
@@ -68,8 +75,14 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 # 标签视图
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = Tagserializer
+    # Tagserializer返回简单数据 TagDetailSerializer返回标签下的文章数据
+    serializer_class = TagDetailSerializer
     queryset = Tag.objects.filter(status=Tag.STATUS_NORMAL)
+
+    # # 在retrieve方法中重新设置serializer_class的值，达到不同接口使用不同serializer的目的
+    def retrieve(self, request, *args, **kwargs):
+        self.serializer_class = TagDetailSerializer
+        return super().retrieve(request, *args, **kwargs)
 
 
 
