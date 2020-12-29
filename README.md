@@ -1,6 +1,6 @@
 # typeidea
 
-# 项目记录
+# 第一部分：初入江湖
 
 ## 后端开发 
 ### 1.奠定项目基石：Model---对数据库中字段的抽象
@@ -171,7 +171,7 @@
 
 
 
-# 编写正式view代码：把数据从数据库中取出来并放到模板中展示
+# 第一部分：正式开发
 1. post_list逻辑：使用Model从数据库批量拿取数据，然后展示标题和摘要
 2. post_detail逻辑：使用Model从数据库批量拿取数据，然后展示
 3. 编写模板数据：根据view传递的数据,使用模板语法展示数据
@@ -529,7 +529,7 @@ sitemap：提供给搜索引擎
 
 
 
-## 使用第三方插件增强管理后台
+# 第三部分：使用第三方插件增强管理后台
 use xadmin，django-autocomplete-light and django-ckeditor 增强管理后台
 
 ### xadmin不写了，已停止更新。
@@ -760,6 +760,64 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 
 
+# 第四部分：上线前的准备及线上问题排查
+
+## 调试和优化
+
+### 常用的调试和调优手段
+#### 调试手段：print, logging, pdb
+1. **print**:打印程序某个位置的变量，校验是否符合预期。JSON或者dict格式的数据，可以使用pprint模块中的pprint函数打印。
+
+2. **logging**：print只能用于开发阶段，在线上手机数据可以使用logging模块，logging用法和print一样，唯一的差别是logging可以选择输出到文件还是输出到控制台。
+
+3. **pdb**：pdb可以跟踪程序的执行流程，pdb提供了REPL(交互式执行环境)，可以在代码中引入importpdb;pdb.set_trace()让程序来到这一行后进入pdb交互模式，进而可以像Python shell中执行命令那样，获取到上下文中所有变量的值或者更改变量的值。-----类似的工具bpdb和ipdb，交互更友好。
+    + pdb运行：python -m pdb python.py
+    +pdb设置断点：在需要设置的位置下引入断点：import pdb;pdb.set_trace(),程序执行到这里就会停止下来，进入交互模式。
+    + pdb指令：
+        + n:next，执行当前语句，只想下一行语句
+        + s:step in，跳入某个执行函数中
+        + c:continue,恢复执行状态
+        + l: list列出当前要执行语句的上下代码
+        + ll: long list，展示当前函数的所有代码
+        + r:return：直接执行到返回结果的部分
+        + q：quit 退出
+
+
+#### 调优手段
+1. 纯手工timer：在要执行代码前增加start = time.time()，最后增加print(time.time() - start),就可以获得代码的执行时间。
+    + 代码示例：
+    ```python
+    import time
+    import requests
+
+    start = time.time()
+    reqeusts.get('https://www.baidu.com')
+    print('cost {}s'.format(time.time() - start))
+    ```
+    + 这样做比较笨拙，可以进一步优化，构建一个装饰器来完成函数执行时间的获取和输出
+    代码：
+    ```python
+    import time
+    import requests
+
+    def time_it(func):
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = func(*args, **kwargs)
+            print(func.__name__, 'cost', time.time() -start)
+            return result
+        return wrapper
+    @time_it
+    def fetch_page():
+        requests.get('http://www.baidu.com')
+    
+    fetch_page()
+    ```
+
+2. profile/cProfile
+
+
+
 
 
     
@@ -767,6 +825,31 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
     
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*args表示任何多个无名参数，它是一个tuple；**kwargs表示关键字参数，它是一个dict。
+*args(tuple)代表继承来的参数不可更改，需要继承后再更改
 
 
 
