@@ -749,6 +749,19 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
     + 修改serializers.py中的代码
     + 在apis.py中修改TagViewSet，添加retrieve,在retrieve方法中重新设置serializer_class的值，达到不同接口使用不同serializer的目的
 
+
+
+### 总结
+无论是通过接口输出内容还是通过页面渲染内容，都是输出的一种
+无论是通过提交表单(form)的方式还是通过Ajax(serializer)的方式提交数据都是输入的一种，唯一的差别是格式不同。
+一图总结：
+![avatar](img\form&serializer.jpg)
+
+
+
+
+
+
     
 
     
