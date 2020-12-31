@@ -31,6 +31,7 @@ from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 from blog.apis import PostViewSet, CategoryViewSet, TagViewSet
+from django.conf import settings
 # from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 
@@ -84,3 +85,9 @@ urlpatterns = [
     # url(r'^tag-autocomplete/$', TagAutocomplete.as_view(),name='tag-autocomplete'),
 
 ]# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 配置图片资源访问
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
