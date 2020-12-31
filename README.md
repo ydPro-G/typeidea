@@ -815,6 +815,37 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
     ```
 
 2. profile/cProfile
+    + 性能检测工具，探测函数的执行时间和执行次数，方便查询函数执行细节，是否是网络接口调用次数过多导致的执行缓慢，还是冗余的数据处理操作导致执行了太多无效代码。
+    + 代码示例：定义函数loop，使用profile测量该函数的执行细节,可以显示这个函数的**ncalls：执行次数，tottime：总执行时间(排除子函数执行时间)，percall：平均每次执行时间（tottime/ncalls），cumtime：累计执行时间（包括子函数执行时间），percall：平均每次执行时间,filename:lineno(function):具体执行内容说明**
+    ```python
+    import cProfile
+    import pstats
+    from io import StringIO
+
+    pr = cProfile.Profile()
+
+    def loop(count):
+        result = []
+        for i in range(count):
+            result.append(i)
+
+
+    pr.enable()
+    loop(100000)
+    pr.disable()
+    s = StringIO()
+    # sortby = 'cumulative'
+    sortby = 'tottime'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    print(s.getvalue())
+    ```
+
+#### 总结：调试和优化是必须的，还要对组件做优化
+
+### 使用django-debug-toolbar优化系统
+
+
 
 
 
