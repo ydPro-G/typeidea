@@ -845,7 +845,7 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 
 
-### 使用django-debug-toolbar优化系统
+## 使用django-debug-toolbar优化系统，能在线看到各种数据
 django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 
 #### 快速配置
@@ -853,6 +853,8 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 2. 再settings/develop.py中新增代码
     + 在develop.py中增加的原因是该工具只有在DEBUG为True时才生效，上线后不能用。
 3. 配置urls.py,新增代码
+
+#### 解读数据
 
 
 
