@@ -855,6 +855,12 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 3. 配置urls.py,新增代码
 
 #### 解读数据
+1. versions: 展示项目用到的库与版本
+2. 时间：展示服务端耗时；浏览器端请求响应耗时(使用timing.js库)
+3. SQL：表示请求时执行了那些SQL语句，也就是查询数据库部分。
+    + 21 queries including 13 duplicates,21个数据库请求，13个是重复的。
+    + SQL下面有类似Duplicated 4 times提示的都是被重复执行的。大部分重复请求都是模板中产生的。
+    + 如何解决重复请求？使用select_related方法
 
 
 
