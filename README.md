@@ -857,10 +857,33 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 #### 解读数据
 1. versions: 展示项目用到的库与版本
 2. 时间：展示服务端耗时；浏览器端请求响应耗时(使用timing.js库)
-3. SQL：表示请求时执行了那些SQL语句，也就是查询数据库部分。
-    + 21 queries including 13 duplicates,21个数据库请求，13个是重复的。
-    + SQL下面有类似Duplicated 4 times提示的都是被重复执行的。大部分重复请求都是模板中产生的。
-    + 如何解决重复请求？使用select_related方法
+3. **SQL：表示请求时执行了那些SQL语句，也就是查询数据库部分。**
+    + **21 queries including 13 duplicates,21个数据库请求，13个是重复的。**
+    + **SQL下面有类似Duplicated 4 times提示的都是被重复执行的。大部分重复请求都是模板中产生的。**
+    + **如何解决重复请求？使用select_related方法**
+    + **举例：侧边栏现在也会查询category和User,但是不需要展示，如何不让这两个字段展示？   1.修改Model中的Post的latest_posts方法**
+    ```python
+        def latest_posts(cls, with_related=True):
+        queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
+        if with_related:
+            queryset = queryset.select_related('owner', 'category')
+        return queryset
+    新增参数with_related,控制返回数据是否包含category和user
+    修改完成后还需要修改SideBar模型，此时只需要把content_html方法中的
+    'post' : Post.latest_posts() 修改为
+    'post' : Post.latest_posts(with_related=False)
+    让侧边栏的数据里不包含category和user即可
+    ```
+    + **查看time，最长的是优化重点。在最右侧有两个动作，一个是Sel，查看具体返回的对象是什么；一个是Expl,用来查看具体执行情况的命令，根据这两个来优化。**
+
+4. Settings:项目中的setting配置
+5. Headers：请求header数据
+6. Request：请求的一些数据
+7. Static files:当前页面用的静态文件，以及那些静态文件可用。
+8. Templates：用到的模板以及渲染这些模板时传递的上下文变量
+9. Cache：看到缓存的命中情况以及其他统计
+10. Signals：查看当前相中的signal以及配置了那些Receiver
+11. Logging：当前请求中项目通过logging模块记录了那些日志
 
 
 

@@ -155,10 +155,12 @@ class Post(models.Model):
                 # 返回信息
         return post_list, category
     
-    # 接口，返回状态正常的帖子，cls指的是这个类本身
+    # 接口，返回状态正常的帖子，cls指的是这个类本身   with_related:控制返回数据是否加上外键数据
     @classmethod
-    def latest_posts(cls):
+    def latest_posts(cls, with_related=True):
         queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
+        if with_related:
+            queryset = queryset.select_related('owner', 'category')
         return queryset
 
     # 返回最热帖子,按照访问量排序
