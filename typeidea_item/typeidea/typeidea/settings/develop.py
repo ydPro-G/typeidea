@@ -20,3 +20,8 @@ MIDDLEWARE += [
 ]
 
 INTERNAL_IPS = ['127.0.0.1']
+
+# 去掉了其他配置，只看火焰图的统计
+# DEBUG_TOOLBAR_PANELS = [
+#     'djdt_flamegraph.FlamegraphPanel',
+# ]

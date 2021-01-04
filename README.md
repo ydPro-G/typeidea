@@ -887,6 +887,18 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 
 
 
+### 配置第三方panel
+
+#### 1.djdt_flamegraph 火焰图
+1. 安装pip install djdt_flamegraph == 0.2.12
+2. 配置settings/develop.py
+3. 为便于观察，修改SideBar模型中的get_all函数，增加sleep代码,等待3秒
+4. 使用 ./manage.py runserver --noreload --nothreading命令，启动项目
+5. **火焰图纵向是调用栈，横向是执行时间，平顶越宽，耗时越大，具体到函数了。**
+
+#### 2.pympler内存占用分析
+1. 安装
+
 
 
 
