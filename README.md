@@ -916,7 +916,11 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
     + Line Contents：对应代码
 
 
-### 总结：调优手段，优化系统，各种插件
+#### 总结：django-debug-toolbar适合自己分析自己项目的性能
+
+
+### 使用silk
+让测试用户访问最后你来看分析结果，silk非常适合
 
 
 
