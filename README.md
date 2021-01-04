@@ -933,6 +933,19 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
     +**SQL：列出具体SQL执行情况，点进去可以看到这个SQL由那行代码发起**
 
 
+#### 配置profiling
+1. 修改blog/views.py,在ommonViewMixin里添加装饰函数@silk_profile(name='get_context_data')。
+2. 打开http://127.0.0.1:8000/silk，查看profiling
+3. profiling记录了装饰函数在执行时的耗时以及是否产生查询的情况
+
+
+#### 总结
+xilk：适合测试时用
+
+### 本章总结
+介绍了python中常用的调试和调优方法，了解了两个比较好的插件：django-debug-toolbar和silk
+无论什么语言与矿建，调优思路大体一致：减少外部I/O，减少冗余的调用，优化耗时的逻辑。
+
 
     
 
@@ -965,6 +978,9 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 *args表示任何多个无名参数，它是一个tuple；**kwargs表示关键字参数，它是一个dict。
 *args(tuple)代表继承来的参数不可更改，需要继承后再更改
 
+
+当你把一对小括号放在后面，这个函数就会执行；然而如果你不放括号在它后面，那它可以被到处传递，并且可以赋值给别的变量而不去执行它。 你明白了吗？让我再稍微多解释点细节。
+当我们写下 a = hi()，hi() 会被执行，而由于 name 参数默认是 yasoob，所以函数 greet 被返回了。如果我们把语句改为 a = hi(name = "ali")，那么 welcome 函数将被返回。我们还可以打印出 hi()()，这会输出 now you are in the greet() function。
 
 
 

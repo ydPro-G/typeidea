@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.views.generic import DetailView,ListView
 from django.shortcuts import get_object_or_404
 from django.core.cache import cache # 缓存功能
+from silk.profiling.profiler import silk_profile
 
 from comment.forms import CommentForm
 from comment.models import Comment
@@ -70,6 +71,7 @@ from .models import Post, Category,Tag
 
 # 通用数据：分类导航，侧边栏和底部导航，这些是基础数据，写成一个类。通过组合方式复用
 class CommonViewMixin:
+    @silk_profile(name='get_context_data')
     # 使用**kwargs定义参数时，kwargs将会接收一个positional argument后所有关键词参数的字典。
     def get_context_data(self, **kwargs):  
         context = super().get_context_data(**kwargs)
