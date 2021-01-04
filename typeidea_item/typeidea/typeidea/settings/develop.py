@@ -13,15 +13,20 @@ DATABASES = {
 
 INSTALLED_APPS += [
     'debug_toolbar',
+    'silk',
     # 'pympler',
     # 'debug_toolbar_line_profiler',
 ]
 
 MIDDLEWARE += [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 INTERNAL_IPS = ['127.0.0.1']
+
+
+
 
 
 

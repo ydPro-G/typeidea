@@ -920,8 +920,17 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 
 
 ### 使用silk
-让测试用户访问最后你来看分析结果，silk非常适合
+让测试用户访问最后你来看分析结果，silk非常适合，它需要手机并存储所有访问数据，因此需要增加新的表来存储。
 
+#### 快速配置silk
+1. 安装 pip install django-silk==3.0.0 -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+2. 配置settings/develop.py
+3. 配置url
+4. 创建表，因为需要silk存储数据--python manage.py migrate
+5. **多访问几个页面，然后打开http://127.0.0.1:8000/silk，展示刚才随机点开的页面请求耗时，数据库请求树以及有多少次数据库请求。**
+6. 点进去可以看到，detail，sql，profiling
+    + detail：浏览器network看到的内容
+    +SQL：列出具体SQL执行情况，点进去可以看到这个SQL由那行代码发起
 
 
 

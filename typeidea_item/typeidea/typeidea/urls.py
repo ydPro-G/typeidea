@@ -91,3 +91,6 @@ if settings.DEBUG:
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+if settings.DEBUG:
+    urlpatterns += [url(r'^silk', include('silk.urls', namespace='silk'))]
