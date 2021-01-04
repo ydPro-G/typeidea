@@ -13,6 +13,8 @@ DATABASES = {
 
 INSTALLED_APPS += [
     'debug_toolbar',
+    # 'pympler',
+    # 'debug_toolbar_line_profiler',
 ]
 
 MIDDLEWARE += [
@@ -21,7 +23,25 @@ MIDDLEWARE += [
 
 INTERNAL_IPS = ['127.0.0.1']
 
-# 去掉了其他配置，只看火焰图的统计
+
+
+# 火焰图配置文件
 # DEBUG_TOOLBAR_PANELS = [
 #     'djdt_flamegraph.FlamegraphPanel',
+# ]
+
+
+# pympler配置文件
+# DEBUG_TOOLBAR_CONFIG = {
+#     'JQUERY_URL': 'https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js',
+# }
+
+# pympler配置文件
+# DEBUG_TOOLBAR_PANELS = [
+#     'pympler.panels.MemoryPanel',
+# ]
+
+# line_profiler配置文件
+# DEBUG_TOOLBAR_PANELS = [
+#     'debug_toolbar_line_profiler.panel.ProfilingPanel',
 # ]

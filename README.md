@@ -889,15 +889,34 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 
 ### 配置第三方panel
 
-#### 1.djdt_flamegraph 火焰图
+#### 1.djdt_flamegraph----火焰图
 1. 安装pip install djdt_flamegraph == 0.2.12
 2. 配置settings/develop.py
 3. 为便于观察，修改SideBar模型中的get_all函数，增加sleep代码,等待3秒
 4. 使用 ./manage.py runserver --noreload --nothreading命令，启动项目
 5. **火焰图纵向是调用栈，横向是执行时间，平顶越宽，耗时越大，具体到函数了。**
 
-#### 2.pympler内存占用分析
-1. 安装
+#### 2.pympler----内存占用分析
+1. 安装 pip install pympler==0.5
+2. 配置settings/develop.py
+3. **上半部分展示内存和虚拟内存使用情况，下半部分展示Django的Model实例具体占用了多少内存**
+    + **Resident set size : 表示当前进程实际的内存占用**
+    + **Virtual size： 表示系统分配给当前进程的所有虚拟内存**
+
+
+#### 3. line_profiler----行级性能分析插件
+1. 安装 (pip install django-debug-toolbar-line-porfiler==0.6.1)[https://www.jianshu.com/p/9604abfc2b1d]
+2. 配置settings/develop.py
+3. 简介作用：
+    + Line：行号
+    + **Hits：这一行代码被执行的次数--调用次数**
+    + Time：当前行执行时间除以定时器单元
+    + Per Hit：每次执行消耗时间
+    + **%Time：执行时间占总时间的比值--耗时占比**
+    + Line Contents：对应代码
+
+
+### 总结：调优手段，优化系统，各种插件
 
 
 
