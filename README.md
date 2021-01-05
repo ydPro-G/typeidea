@@ -944,10 +944,32 @@ xilk：适合测试时用
 
 ### 本章总结
 介绍了python中常用的调试和调优方法，了解了两个比较好的插件：django-debug-toolbar和silk
-无论什么语言与矿建，调优思路大体一致：减少外部I/O，减少冗余的调用，优化耗时的逻辑。
+无论什么语言与框架，调优思路大体一致：减少外部I/O，减少冗余的调用，优化耗时的逻辑。
 
 
-    
+
+## 配置MySQL和redis缓存
+配置redis，如果只是作为缓存来用，在做完所有的优化之后再来配置缓存，不然会绕过已有的性能问题。
+
+
+### 配置MySQL
+1. 分层模式：MVC模式
+    + Model层--模型层
+    + View(django的Template)----展示层
+    + Controller(django的view)----逻辑控制层
+
+2. **没有固定模式，只有更适合业务的模式**
+
+3. 分层的目的
+    + **解耦：完全耦合的东西在中间加一层，从而保证互相变化后只需要对外接口不变，就不会有任何影响。**
+
+4. 修改settings/develop.py中的DATABASES配置
+
+5. 配置数据库的两种方法
+    + 1. 下载mysql，配置好文件，启动服务，创建数据库CREATE DATABASE mysql_db;，指定数据集，校对规则。
+    + 2. 下载phpstudy+navicatpremium 15，phpstudy启动集成的配置，navicatpremium 15连接数据库
+
+
 
     
 

@@ -6,9 +6,15 @@ DEBUG = True # 开发环境为True，上线后关闭
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.mysql', # # 数据库引擎
+        'NAME': 'typeidea_db',  # 你要存储数据的库名
+        'USER': 'user_root', # 数据库用户名
+        'PASSWORD': '123456', # 密码
+        'HOST': 'localhost', # 默认主机
+        'POST': 3306, # 使用端口
+        # 'CONN_MAX_AGE': 5 * 60,
+        # 'OPTIONS': {'charset': 'utf8mb4'}
+    },
 }
 
 INSTALLED_APPS += [
