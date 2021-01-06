@@ -757,7 +757,7 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 一图总结：
 ![avatar](img\form&serializer.jpg)
 
-
+<hr/>
 
 
 # 第四部分：上线前的准备及线上问题排查
@@ -843,7 +843,7 @@ RestFramework是一个能快速为我们提供API接口，方便我们编程的�
 
 #### 总结：调试和优化是必须的，还要对组件做优化
 
-
+<hr/>
 
 ### django-debug-toolbar优化系统，在线看到各种数据
 django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
@@ -885,7 +885,7 @@ django-debug-toolbar是Django中一个第三方插件，用来做性能排查。
 10. Signals：查看当前相中的signal以及配置了那些Receiver
 11. Logging：当前请求中项目通过logging模块记录了那些日志
 
-
+<hr/>
 
 ### 配置第三方panel
 
@@ -945,7 +945,7 @@ xilk：适合测试时用
 ### 本章总结
 介绍了python中常用的调试和调优方法，了解了两个比较好的插件：django-debug-toolbar和silk
 无论什么语言与框架，调优思路大体一致：减少外部I/O，减少冗余的调用，优化耗时的逻辑。
-
+<hr/>
 
 
 ## 配置MySQL和redis缓存
@@ -990,6 +990,7 @@ xilk：适合测试时用
 #### 总结：找本MYSQL书看
 
 <hr/>
+
 ### 缓存的演变
 了解基本概念。
 
