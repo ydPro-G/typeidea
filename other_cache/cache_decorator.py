@@ -1,5 +1,7 @@
 import functools
 import time
+# 将缓存逻辑封装为函数
+
 
 CACHE = {}
 
