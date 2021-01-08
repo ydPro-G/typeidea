@@ -19,6 +19,7 @@ from django.contrib.sitemaps import views as sitemap_views
 from rest_framework.routers import DefaultRouter
 from django.conf.urls import include
 from rest_framework.documentation import include_docs_urls
+from django.views.decorators.cache import cache_page
 
 
 from .custom_site import custom_site
@@ -62,7 +63,9 @@ urlpatterns = [
     url(r'^comment/$', CommentView.as_view(), name='comment'),
     # RSS and sitemap
     url(r'^rss|feed', LatestPostFeed(), name='rss'),
-    url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+    # 配置缓存
+    url(r'^sitemap\.xml$', cache_page(60 * 20, key_prefix='sitemap_cache_')
+    (sitemap_views.sitemap), {'sitemaps': {'posts': PostSitemap}}),
     # 整个接口 router
     url(r'^api/', include(router.urls, namespace="api")),# hyperlinked这里url李的namespace要删掉
     # 接口文档url

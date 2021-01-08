@@ -10,6 +10,7 @@ class LRUCacheDict:
         self.expiration = expiration
 
         self._cache = {}
+        # 保证顺序，每次遍历都能从最早放进去的数据开始
         self._access_records = OrderedDict() # 记录访问时间
         self._expire_records = OrderedDict() # 记录失效时间
     

@@ -997,7 +997,7 @@ xilk：适合测试时用
 #### 什么是缓存？
 1. 缓存(cache)：其作用是缓和较慢存储的高频次请求。**加速慢存储的访问效率。**
 2. 缓存实现：
-    + **被动缓存：如果这个SQL被执行过，那么段时间内就没必要执行，直接复用上次的结果**实现详情查看--->other_cache\learn_cache.py
+    + **被动缓存：如果这个SQL被执行过，那么短时间内就没必要执行，直接复用上次的结果**实现详情查看--->other_cache\learn_cache.py
     + **主动缓存：1.系统启动时，自动把所有接口刷一遍，这样用户访问时缓存就已经存在；2.在数据写入时同步更新或写入缓存**
 
 
@@ -1010,10 +1010,119 @@ xilk：适合测试时用
 
 #### 增强缓存装饰器
 1. 缓存装饰器会遇到2个问题，1.缓存数据始终不更新，这是个问题；2. CACHE的容量
-2. 解决问题：1.标记被缓存的数据；2.设置CACHE的容量上限---实现一个dict，设定好淘汰算法,代码参考--->other_cache\my_lrucache.py
+2. 解决问题：1.标记被缓存的数据；2.设置CACHE的容量上限---可以通过限制size和时间来限制淘汰那些不经常使用的数据，实现一个自己的dict，设定好淘汰算法,代码参考--->other_cache\my_lrucache.py
     + 实现自己的一个dict，用dict内置的方法--magic method
     + 设定好淘汰算法，当容量超过设定的值时，删掉不需要的内容，使用LRU算法，大体逻辑就是淘汰掉最长时间没使用的哪个。
-    + 实现
+3. 总结my_lrucache.py逻辑
+    + 实现dict：通过**实现内置方法(__getitem__和__setitem__)实现了一个dict对象**
+    + 缓存淘汰算法的使用：实现的是**LRU算法，这个缓存dict是非线程安全**的
+    + OrderedDict的使用：保证顺序，每次遍历都能从最早放进去的数据开始。
+
+4. 实现了自己的dict后，继续修改learn_cache.py
+    + 对于变化频繁函数，有效期设置短一点，变化不频繁的函数有效期长一点
+
+5. 在python3中，LRUCache已经是标准库的一部分，通过引入functools.lru_cache使用
+
+6. 总结：在cache_decorator.py中使用了装饰器，但是需要解决两个问题，缓存数据的更新与缓存数据的容量，所以写了my_lrucache.py,在这里面可以通过限制size和时间来限制淘汰那些不经常使用的数据，自己实现一个自己的dict，然后我们修改learn_cache.py里的代码，这里可以继承自己写的字典，设定max_size和expiration。
+
+
+#### 是否需要引入reddis
+1. 没有性能问题，或者没有那么大的流量，没必要多增加一套系统
+2. 如果需要增加，最好充分掌握它的用法和实现逻辑
+
+
+#### 继续演变缓存逻辑
+如果需要支持多线程应该怎么办？多台服务器呢？可以通过socket编写一个缓存服务器，对外提供服务，无论是多线程还是多进程还是多台服务器，都可以处理了，如果独立的缓存服务受限与服务器内存可以实现分布式缓存吗？
+软件，系统框架都是一些简单需求不断累加的来的
+
+
+
+
+### Django中的缓存配置
+Django缓存配置分为2种，一种是内置的缓存模块，一种是第三方缓存。
+
+#### 内置缓存模块：四种缓存
+1. 实例 urls.py中的sitemap.xml接口进行缓存，20分钟内访问不需要再次生成sitemap
+
+2. local-memory caching：内存缓存，线程安全，进程独立，每个进程一份缓存，默认配置。代码如下👇
+```python
+CACHES = {
+    'default': {
+        # 后端
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        # 路径，位置
+        'LOCATION': 'unique-snowflake',
+    }
+}
+```
+      
+3. filesystem caching: 文件系统缓存,把数据缓存到文件系统中，其他没差别。代码👇
+```python
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+    }
+}
+```
+
+
+4. database caching：数据库缓存，需要创建缓存用的表，这些表用来存储缓存数据。代码👇
+```python
+python manage.py createcachetable
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
+```
+
+
+5. memcached: django推荐的缓存系统，也是分布式（分布式逻辑在客户端）,django内置支持，集成度较好。
+```python
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': [
+            '172.19.26.240:11211',
+            '172.19.26.242:11211',
+        ]
+    }
+}
+```
+
+#### 配置Redis缓存
+
+1. 下载稳定包：https://redis.io/download
+
+2. 配置Django中的Redis缓存
+    + 安装对应包:pip install django-redis==4.9.0-----pip install hiredis==0.2.0，hiredis提升Redis解析性能
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
