@@ -32,6 +32,16 @@ MIDDLEWARE += [
 INTERNAL_IPS = ['127.0.0.1']
 
 
+# 富文本编辑配置
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'toolbar': 'full',
+#         'height': 300,
+#         'width': 800,
+#         'tabSpaces': 4,
+#         'extraPlugins': 'codesnippet', # 配置代码插件
+#     },
+# }
 
 
 

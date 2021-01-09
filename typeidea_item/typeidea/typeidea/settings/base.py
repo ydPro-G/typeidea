@@ -152,6 +152,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'themes', THEME, "static"),
 ]
 
+
+# 富文本编辑配置
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
@@ -162,8 +164,10 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-# rest框架默认分页类
 
+
+
+# rest框架默认分页类
 REST_FRAMEWORK = {
     # 分页类型
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
