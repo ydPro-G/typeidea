@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 import mistune
 from django.utils.functional import cached_property
+from django.core.cache import cache
 
 # Create your models here.
 # 博客内容相关的模型
@@ -155,7 +156,7 @@ class Post(models.Model):
                 # 返回信息
         return post_list, category
     
-    # 接口，返回状态正常的帖子，cls指的是这个类本身   with_related:控制返回数据是否加上外键数据
+    # 接口，返回最新帖子，cls指的是这个类本身   with_related:控制返回数据是否加上外键数据
     @classmethod
     def latest_posts(cls, with_related=True):
         queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
@@ -163,13 +164,26 @@ class Post(models.Model):
             queryset = queryset.select_related('owner', 'category')
         return queryset
 
+
+
+
     # 返回最热帖子,按照访问量排序
+    # 增加cache，10分钟缓存
     @classmethod
     def hot_posts(cls):
-        # 使用only接口只展示title和id
-        return cls.objects.all(status=STATUS_NORMAL).only('title', 'id').order_by('-pv')
+        result = cache.get('hot_posts')
+        if not result:
+            # 使用only接口只展示title和id
+            result = cls.objects.filter(status=cls.STATUS_NORMAL).only('title', 'id').order_by('-pv')
+            cache.set('hot_posts', result, 10 * 60)
+        return result
+        
+        # return cls.objects.all(status=STATUS_NORMAL).only('title', 'id').order_by('-pv')
         # return cls.objects.filter(status=STATUS_NORMAL).order_by('-pv')
     
+
+
+
     # 把返回的数据绑到实例上,values_list使用不了暂时隐藏
     # @cached_property 
     # def tags(self):

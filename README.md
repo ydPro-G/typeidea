@@ -1099,6 +1099,29 @@ CACHES = {
 2. 配置Django中的Redis缓存
     + 安装对应包:pip install django-redis==4.9.0-----pip install hiredis==0.2.0，hiredis提升Redis解析性能
 
+3. 在settings/product.py中增加代码
+
+
+#### 应用场景和缓存的粒度
+需要知道什么时候，什么情况下，在哪里使用缓存。不同场景不同缓存，配置不同粒度。
+
+1. django提供的粒度缓存方案
+    + 整站缓存：直接在settings的MIDDLEWARE中第一行增加'django.middleware.cache.UpdateCacheMiddleware'
+    + 整个页面的缓存:sitemap缓存
+    + 局部数据缓存:既包含函数中某部分逻辑的缓存，也包含 模板中一部分数据的缓存。
+
+2. 局部数据缓存
+    + 函数缓存，增加装饰器，修改Post.hot_posts，进行较长时间缓存
+    + 模板缓存:只需要把缓存的内容用cache标签包起来👇50s
+    ```python
+    {% load cache %}
+    {% cache 50 sidebar %}
+        ..sidebar..
+    {% endcache %}
+    ```
+
+#### 总结
+django缓存配置和使用都非常简单，并且提供了多种缓存系统的适配。
 
 
 
