@@ -1,6 +1,7 @@
 from dal import autocomplete
 from django import forms
 from ckeditor.widgets import CKEditorWidget
+import mistune
 
 from .models import Category, Tag, Post
 
@@ -9,7 +10,9 @@ from .models import Category, Tag, Post
 class PostAdminForm(forms.ModelForm):
     # widget 文本框 ，简介：摘要 required
     desc = forms.CharField(widget=forms.Textarea, label='摘要',required=False)
-    content = forms.CharField(widget=CKEditorWidget(), label='正文', required=True)
+    
+    # 正文文本框
+    # content = forms.CharField(widget=widget=CKEditorWidget(), label='正文', required=True)
     # category = forms.ModelChoiceField(
     #     queryset=Category.objects.all(),
     #     widget=autocomplete.ModelSelect2(url='category-autocomplete'),

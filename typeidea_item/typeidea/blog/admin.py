@@ -4,6 +4,7 @@ from django.utils.html import format_html
 from django.contrib.admin.models import LogEntry
 
 from .models import Post, Category, Tag
+# 富文本编辑
 from .adminforms import PostAdminForm
 from typeidea.base_admin import BaseOwnerAdmin
 from typeidea.custom_site import custom_site # 引入typeidea文件的custom_site文件和类
@@ -82,7 +83,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter): # 继承admin模块SimplListF
 # 将site更换为我们自定义的site
 @admin.register(Post, site = custom_site) 
 class PostAdmin(BaseOwnerAdmin):
-    #  自定义Form，修改status的输入框为文本框(Textarea)
+    #  自定义Form，# 富文本编辑
     form = PostAdminForm
     # 列表页面展示字段
     list_display = [

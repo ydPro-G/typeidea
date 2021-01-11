@@ -456,8 +456,8 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 评论到展示的流程：填写评论，提交表单->comment/forms.py--CommentForm处理表单->验证通过->保存数据到instance->instance.save方法把数据保存到数据库->用户刷新页面->通过comment_block模板自定义标签获取并展示数据
 
     + 在写数据的时候进行转换，修改clean_conntent方法，在return content之间增加content = mistune.markdown(content)
-    + 写完这句语法后HTML代码直接展示到页面，这时需要手动关闭Django模板自动转码功能
-    + 关闭自动转码:comment/block.html代码{{ comment.content }}位置上下增加autoescape off 
+    
+    + 写完这句语法后HTML代码直接展示到页面，这时需要手动关闭Django模板自动转码功能---关闭自动转码:comment/block.html代码{{ comment.content }}位置上下增加autoescape off 
 
 3. 文章正文使用Markdown
     + 在Model/Post中新增字段content_html,储存Markdown处理后的内容，修改完model后迁移数据库
