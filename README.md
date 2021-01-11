@@ -456,7 +456,7 @@ function view和class-based view的差别，说白了就是函数和类的区别
     + 评论到展示的流程：填写评论，提交表单->comment/forms.py--CommentForm处理表单->验证通过->保存数据到instance->instance.save方法把数据保存到数据库->用户刷新页面->通过comment_block模板自定义标签获取并展示数据
 
     + 在写数据的时候进行转换，修改clean_conntent方法，在return content之间增加content = mistune.markdown(content)
-    
+
     + 写完这句语法后HTML代码直接展示到页面，这时需要手动关闭Django模板自动转码功能---关闭自动转码:comment/block.html代码{{ comment.content }}位置上下增加autoescape off 
 
 3. 文章正文使用Markdown
@@ -1127,6 +1127,74 @@ django缓存配置和使用都非常简单，并且提供了多种缓存系统�
 ### 本章总结
 配置了MySQL和缓存
 别忘了修改成markdown
+
+
+
+
+## 上线前的准备
+如何部署上线，让代码为用户提供服务。
+
+### 代码如何为用户提供服务
+img\部署结构图.jpg
+
+
+#### 整体结构
+1. 先到打包服务器执行打包命令(逻辑：从git仓库拉取最新代码，并执行打包)
+
+2. 到部署服务器执行部署命令，部署服务器远程连接生产服务器，执行安装命令，安装对应版本。
+
+
+#### 项目部署方案
+传代码到服务器--->安装项目依赖包---->启动项目
+1. 代码到服务器步骤
+    + 打包和上传软件到一个软件源，在生产服务器执行安装命令
+
+2. 软件分发方式
+    + rsync/scp工具：同步两个服务器之间文件的工具，较方便的将本地文件同步到服务器上，个人项目可以使用这个工具。
+    + git仓库分发代码：可以在服务器上通过拉去git仓库的代码来更新代码
+    + PyPI：标准的Python项目分发方式：需要自己搭建PyPI服务器，将开发好的代码打包并上传到PyPI服务器。
+
+3. 系统架构
+1. img\系统架构图.jpg
+
+2. 流程：
+    + 项目对外发布时，申请对外域名，最外层服务器根据域名转发用户请求到应用系统上，最终通过读取数据库的数据拿到结果，返回给用户。
+
+3. 注意：避免单点存在，每个节点的服务器都要部署多台；1.提供系统的并发承载；2.避免某台机器宕掉对整体服务产生影响。
+
+
+
+### 标准化打包和自动化部署
+使用官方的PyPI打包
+
+#### 配置项目的setup.py
+1. setup.py作用：打包和安装
+
+2. 这个文件只是执行了Python提供的setup函数，需要了解这个函数中每项参数的作用
+
+3. 编写：放在typeidea根目录下
+
+4. 参数介绍：**了解控制把文件打到包里的参数**
+
+    + packages:指明要打入的包，find_packages函数帮助我们发现指定目录下的所有Python包
+
+    + package_dir：指明上面的packages的包都在哪个目录下，如果再setup.py统计目录，可以不写。
+
+    + package_data:指明除了.py文件外，还需要打包那些文件到最终的安装包里。对应的值需要是字典格式，key表示要查找的目录，value是list结构，表示要查找的具体文件。如果key为空表示查找所有包。需要打包javascript文件，位置在typeidea/themes/bootstrap/static/js/post_editor.js,**开头typeidea是包名，所以从themes开始，匹配每一级目录。**
+
+    + include_package_data同package_data类似，也是用来指定要打包那些额外文件到安装包里，不同的是，这项配置依赖MANIFEST.in文件---文件路径(MANIFEST.in)
+
+    + **package_data和include_package_data功能差不多，一般用第二种方式配置，因为配置简单。**
+
+    + install_requires: 指明依赖版本。安装当前项目时，先去安装依赖包，也是这项配置。
+
+    + extras_require: 额外的依赖，安装包的同时也会安装这个配置里面的包
+
+    + scripts：指明要放到bin目录下的可执行文件
+
+    + entry_points：程序执行点，比较常用的配置是console_scripts，用来生成一个可执行文件到bin目录下。
+
+    + classifiers：说明当前项目情况，版本，阶段，面向人群等信息。
 
 
 
