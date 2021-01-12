@@ -1,6 +1,7 @@
 MANIFEST.in
 README.md
 setup.py
+typeidea/typeidea/manage.py
 typeidea/typeidea.egg-info/PKG-INFO
 typeidea/typeidea.egg-info/SOURCES.txt
 typeidea/typeidea.egg-info/dependency_links.txt

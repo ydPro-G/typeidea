@@ -1196,7 +1196,24 @@ img\部署结构图.jpg
 
     + classifiers：说明当前项目情况，版本，阶段，面向人群等信息。
 
-5. 配置好setup.py后，运行python setup.py sdist或者python setup.py bdist_wheel。----注意：如果打包出现gbk错误，请把MANIFEST.in中的中文删掉，以及.py文件不能用中文名
+5. 配置好setup.py后，运行python setup.py sdist或者python setup.py bdist_wheel。----**注意：如果打包出现gbk错误，请把MANIFEST.in中的中文删掉，以及.py文件不能用中文名**
+
+
+
+#### sdist与bdist_wheel的差别：bdist_wheel更好
+1. **sdist：源码分发，打包之后的包时以.tar.gz结尾,打的包是源码包。**当用pip安装源码包时，还需要经过build阶段，也就是执行python setup.py install
+2. **bdist_wheel：打出来的包是wheel格式，以whl结尾，这种格式的包里面包含文件和元数据，安装时只需要移动到对应位置即可。**
+
+3. 有wheel包存在优先安装wheel
+
+4. 通过参数控制最终输出的包是针对python哪个版本的。比如python setup.py bd-st_wheel --universal：表示所有版本，并且没有c扩展；python setup.py bdist_wheel --python-atg py36:指定版本为python3.6。也可以通过文件方式配置，创建文件setup.cfg,设定[bdist_wheel] python-tag = py36 #universal=0，仅限当前python版本2或3 #universal=1 # 2和3通用
+
+
+#### 配置内部PyPI服务器
+1. 安装：pip install pypiserver
+
+2. 启动：pypi-server -p 18080 -p /opt/mypypi/.htaccess /opt/mypypi/packages
+
 
 
 

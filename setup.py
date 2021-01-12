@@ -40,7 +40,7 @@ setup(
     },
     # 指明要放到bin目录下的可执行文件
     scripts=[
-        'typeidea/manage.py',
+        'typeidea\\typeidea\\manage.py',
     ],
     entry_points={
         'console_scripts': [
