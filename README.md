@@ -1196,6 +1196,8 @@ img\部署结构图.jpg
 
     + classifiers：说明当前项目情况，版本，阶段，面向人群等信息。
 
+5. 配置好setup.py后，运行python setup.py sdist或者python setup.py bdist_wheel。----注意：如果打包出现gbk错误，请把MANIFEST.in中的中文删掉，以及.py文件不能用中文名
+
 
 
 
