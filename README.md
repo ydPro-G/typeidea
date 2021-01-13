@@ -1209,10 +1209,15 @@ img\部署结构图.jpg
 4. 通过参数控制最终输出的包是针对python哪个版本的。比如python setup.py bd-st_wheel --universal：表示所有版本，并且没有c扩展；python setup.py bdist_wheel --python-atg py36:指定版本为python3.6。也可以通过文件方式配置，创建文件setup.cfg,设定[bdist_wheel] python-tag = py36 #universal=0，仅限当前python版本2或3 #universal=1 # 2和3通用
 
 
-#### 配置内部PyPI服务器
+#### 配置内部PyPI服务器:需要在linux系统使用
 1. 安装：pip install pypiserver
 
-2. 启动：pypi-server -p 18080 -p /opt/mypypi/.htaccess /opt/mypypi/packages
+2. 启动：pypi-server -p 18080 -P /opt/mypypi/.htaccess /typeidea/dist
+    + -p:指定端口号
+    + -P：指定认证文件 最后一个参数是上传包存放目录
+
+
+#### 自动化部署
 
 
 
