@@ -1218,6 +1218,33 @@ img\部署结构图.jpg
 
 
 #### 自动化部署
+自动化：把人类需要做的操作让代码来执行
+
+1. 新版本上线需要的流程
+    + 1.打包上传到PyPI服务器：python setup.pybdist_wheel upload -r internale
+    + 2. 登录生产服务器 ssh root@product_server_ip
+    + 3. 检查或创建虚拟环境：less my-venv/.bin/activate或python3.6 -m venv my-venv
+    + 4. 激活虚拟环境：source my-venv/.bin/activate
+    + 5. 安装对应包：pip install typeidea==0.1 -i http://private-pypi-server.com/simple/--trusted-host private-pypi-server.com
+    + 6. 上传supervisord.conf
+    + 7. 启动supervisord
+
+2. 服务上线后，可能随时会遇到突发流量，需要增加服务器，一次增加很多台。此时，怎么快速把所有服务器都安装好？这就是自动化的意义。
+
+3. 合适自动化部署的库：paramiko和Fabric
+    + paramiko：比较底层的库，是SSHv2协议的Python实现，提供一个SSHClient使用，可以完成SSH的所有操作。
+    + Fabic：是基于paramiko的库，封装了很多工具
+    + 对比来说：paramiko像是socket，而Fabric相当于requests这样多封装的库
+
+4. Ansible:Fabric像是一个工具箱，用来在远端执行命令，而Ansible提供了一套简单的流程，按照流程来就可以。
+
+#### 编写fabfile配置:通过对SSH的包装对rsync的包装，处理跟远端服务器的交互
+1. Fabric提供了哪些功能？
+    + 配置主机信息以及提供全局的env对象，在代码执行期间的任意函数中通过它获取配置信息
+    + 对本地shell命令和远端shell命令的封装,可以通过简单的local(whoami)或者run('whoami)的方式在本地或者远端执行命令
+    + 基于上面两项功能提供了更多的工具及
+    + 上下文管理工具context_manager
+
 
 
 
