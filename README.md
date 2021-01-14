@@ -1245,7 +1245,26 @@ img\部署结构图.jpg
     + 基于上面两项功能提供了更多的工具及
     + 上下文管理工具context_manager
 
+2. 在项目根目录下增加fabric.py文件，同时新增一个conf文件夹在文件夹中新增supervisord.conf文件
 
+3. 编写fabfile.py
+
+4. 打包时只需要执行命令fab build
+
+5. 如果通过专门服务器打包，需要把local替换为run，并且也需要把_Version中操作文件的部分改成Fabric提供的fabric.contrib.files.sed来进行版本号的替换，另外还需要增加分支切换的逻辑，因为打包时要指明分支。
+
+6. 理解打包逻辑后，编写部署方法fabfile.py
+
+7. 执行打包命令fab build
+
+8. 项目部署完成后，收集静态文件到STATIC_ROOT下
+
+9. 开发完成后，理论上拿到服务器并配置号SSH key认证登录后，只需要执行fab deploy:<对应版本>,<对应profile>，就可以把项目安装上去
+
+
+### 总结
+
+要做到自己搭建PyPI服务器，能完成通过fab的打包，上传以及部署安装
 
 
 
