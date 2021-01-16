@@ -1273,7 +1273,21 @@ img\部署结构图.jpg
 1. 使用WSGI方式部署项目而不是通过runserver部署项目
 
 ### Gunicorn简介
+1. Django实现了WSGI协议，通过该协议，可以使其运行在其他WSGI容器中。Gunicorn就是这么一个容器。
 
+2. Gunicorn是纯Python开发的一款WSGI容器，它使用pre-fork多进程模式，能够广泛兼容不同Web框架，实现简单，资源占用少，相当快。
+
+3. 特性：
+    + 原生支持WSGI，Django和Paster
+    + 自动的工作进程管理
+    + 简单的Python配置
+    + 多种工作进程配置方式
+    + 提供多种钩子(hook)，便于开发自己的扩展
+
+4. 提供多种worker模型
+    + 同步方式：sync--默认配置,与runserver类似，但是它不会启动新的线程来处理接受的请求
+    + 异步方式：gaiohttp,gthread,gevent,eventlet,tornado
+    + 
 
 
 
