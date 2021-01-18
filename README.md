@@ -1287,7 +1287,44 @@ img\部署结构图.jpg
 4. 提供多种worker模型
     + 同步方式：sync--默认配置,与runserver类似，但是它不会启动新的线程来处理接受的请求
     + 异步方式：gaiohttp,gthread,gevent,eventlet,tornado
-    + 
+    + 异步分为：异步worker，tornado，worker，AsyncIO(异步IO)，worker
+
+
+#### 使用Gunicorn
+
+1. 通过gunicorn typeidea.wsgi:application -w 8 -k gtnread -b 127.0.0.1:8000 --max-requests=10000 启动
+    + -w：启动进程数，n+1
+    + -k:使用哪个worker模型运行项目
+    + -b：绑定到哪个端口上
+    + --max-requests:可选配置，当进程处理请求达到指定数量后重启，避免内存泄漏
+
+
+#### Supervisor介绍：进程控制软件 
+1. 提供功能：
+    + supervisord：启动supervisor组件
+    + supervisorctl：通过类似shell的交互方式来管理已经启动的进程
+    + Web服务器
+    + XML-RPC接口：提供跟Web服务器一样的功能，只是对上面接口做了xmlrpc的封装
+
+2. 配置文件：
+    + [unix_http_server]:UNIXsocket配置，是supervisor用来管理进程的接口（supervisord启动后，supervisorctl需要通过这个socket来跟它通信）
+    + [inet_http_server]:这时Web服务器配置
+    + [rpcinterface:supervisor]：用来配置RPC接口，这是必须的配置
+    + [supervisorctl]：命令配置
+    + [program<程序名>]：程序配置
+
+3. 安装：pip install supervisor -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+
+4. 编写dev_supervisord.conf
+
+5. 通过supervisord -c conf/dev_supervisord.conf运行程序
+
+6. 有异常通过过tail -f stdout.log以及tail -f supervisord.log查看是否有异常日志
+
+7. 需要注意：[program_name:typeidea]下的command和directory需要重新配置
+
+#### 自动化部署和supervisord
+
 
 
 
