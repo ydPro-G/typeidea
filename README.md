@@ -1325,6 +1325,46 @@ img\部署结构图.jpg
 
 #### 自动化部署和supervisord
 
+1. _reload_supervisoird函数作用：根据变量渲染supervisord.conf，然后将其上传到对应的部署目录，通过run函数，关闭原有的supervisord进程，然后启动新的进程。这样做的目的是加载新的supervisord.conf
+
+
+####  setup.py和requirements.txt
+1. 新增的依赖项添加到setup.py中，并且一定要写版本号
+
+2. 修改requirements.txt
+    + 第一行指明需要从内部PyPI源安装
+    + 第二行是依赖项
+    + 第三行是指从当前目录安装，其实就是通过setup.py安装当前的项目
+
+
+#### 配置正式settings
+1. 配置正式环境，也就是配置settings/product.py
+    + SECRET_KEY:加密，不要对外泄漏。
+    + DEBUG：生产环境要设置成False
+    + ALLOWED_HOSTS: 允许访问的域名，它在DEBUG为False时才会生效，用于配置外部访问
+    + E-mail相关配置：服务器配置了SMTP服务的话，就不需要额外配置，否则需要配置E-mail服务。
+    + STATIC_ROOT：通过./manage.py collectstatic命令将所有静态资源收集到这项配置中
+    + CONN_MAX_AGE：对于线上应用，建议配置长连接，但是需要避免使用多线程或者gevent
+    + LOGGING:日志时必不可少的部分，通过它来记录和排查线上问题
+    + ADMINS和MANAGERS：配置系统管理员邮箱，这时list格式，用来接收系统异常，前提是配置了邮件服务。
+    + 配置自定义异常页面
+
+2. 编写product.py
+
+
+#### 静态文件处理
+1. 常规Nginx配置
+
+2. 通过Django提供的静态文件服务来处理静态请求
+
+
+#### 总结
+1. 本地：通过runserver
+2. 测试服务器通过 fab -R myserver deploy:0.1,develop部署
+3. 正式：fab -R mysql deploy:0.1, product部署
+
+
+
 
 
 
