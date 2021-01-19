@@ -1366,9 +1366,39 @@ img\部署结构图.jpg
 
 
 
+### 配置Nginx：如何通过Nginx来做负载均衡
+
+#### 1.Nginx介绍
+1. Nginx是俄罗斯人编写的轻量级HTTP服务器，是一个高性能的HTTP和反向代理服务器，同时也是一个IMAP/POP3/SMTP代理服务器。Nginx最早由俄罗斯人lgor Sysoev开发。很长时间内，它被用作高负载的俄罗斯网站上。
+
+#### 2.为什么使用Nginx
+ 1. 从理论上来讲，其实不需要Nginx这样一个代理服务器的，哪个为什么需要额外增加呢？
+
+ 2. 了解下Web部署模型
+     + 1. **最简单的Web部署模型--runserver**：**client直接连接socket**，但是不能用于生产环境。
+     + 2. **通过Gunicorn--Gunicorn WSGI**：可以**通过多进程方式来部署项目，但是依然受限于单机资源限制**，不能很方便的通过增加服务器提高负载能力
+     + 3.**较常见的系统结构--Nginx+Gunicorn**：好处是可以**有多台服务器来部署Nginx，也可以有多台服务器来部署Gunicorn应用，在这样架构中，Nginx处于网管角色，有效分发恶意请求，处理静态资源，扩展方便**。
+     + 4.**比较成熟的架构模型--Nginx+Gunicorn**：**避免单点存在，因此架构中的任何一个组件都需要在不同的服务器/机房”冗余“一份**，一方面可以**抗住高并发流量，另一方面不会因为服务器或者机房故障导致系统不可用。**
+
+
+3. 从'runserver'到'Gunicorn WSGI'，再到'Nginx+Gunicorn'，其实是在**不断增加软件中的'层'，让每一层只通过一定的标准来通信**，比如**Gunicorn和Django通过WSGI**，**Nginx和Gunicorn通过HTTP接口**，这样**每一层的变化都不会对另一层造成影响**。**在Gunicorn中，可以选择任意的worker模型**，**在Nginx，也可以调整任意参数**，而不会对后端造成影响。
+
+
+#### 3. 配置Nginx
+1. 安装 yum insteadall nginx
+
+2. 安装后的默认配置/etc/nginx/nginx.conf
+
+3. 在/etc/nginx/apps/typeidea.conf最后一行包含网站的配置文件
+
+4. 通过fab deploy:<版本>,product部署项目，启动Nginx后就能看到页面了，激活虚拟环境，并且配置正式的profile:export TYPEIDEA_PROFILE=product，然后执行./bin/manage.py collectstatic
+
+#### 总结
+Nginx是现在Web开发中不可缺少的组件。
 
 
 
+### 常用的监控手段
 
 
 
