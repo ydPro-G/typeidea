@@ -1369,7 +1369,52 @@ img\部署结构图.jpg
 
 
 
+<<<<<<< Updated upstream
 
+=======
+ 2. 了解下Web部署模型
+     + 1. **最简单的Web部署模型--runserver**：**client直接连接socket**，但是不能用于生产环境。
+     + 2. **通过Gunicorn--Gunicorn WSGI**：可以**通过多进程方式来部署项目，但是依然受限于单机资源限制**，不能很方便的通过增加服务器提高负载能力
+     + 3.**较常见的系统结构--Nginx+Gunicorn**：好处是可以**有多台服务器来部署Nginx，也可以有多台服务器来部署Gunicorn应用，在这样架构中，Nginx处于网管角色，有效分发恶意请求，处理静态资源，扩展方便**。
+     + 4.**比较成熟的架构模型--Nginx+Gunicorn**：**避免单点存在，因此架构中的任何一个组件都需要在不同的服务器/机房”冗余“一份**，一方面可以**抗住高并发流量，另一方面不会因为服务器或者机房故障导致系统不可用。**
+
+
+3. 从'runserver'到'Gunicorn WSGI'，再到'Nginx+Gunicorn'，其实是在**不断增加软件中的'层'，让每一层只通过一定的标准来通信**，比如**Gunicorn和Django通过WSGI**，**Nginx和Gunicorn通过HTTP接口**，这样**每一层的变化都不会对另一层造成影响**。**在Gunicorn中，可以选择任意的worker模型**，**在Nginx，也可以调整任意参数**，而不会对后端造成影响。
+
+
+#### 3. 配置Nginx
+1. 安装 yum insteadall nginx
+
+2. 安装后的默认配置/etc/nginx/nginx.conf
+
+3. 在/etc/nginx/apps/typeidea.conf最后一行包含网站的配置文件
+
+4. 通过fab deploy:<版本>,product部署项目，启动Nginx后就能看到页面了，激活虚拟环境，并且配置正式的profile:export TYPEIDEA_PROFILE=product，然后执行./bin/manage.py collectstatic
+
+#### 总结
+Nginx是现在Web开发中不可缺少的组件。
+
+
+
+### 常用的监控方式
+1. 对与正式项目来说一定要增加监控：
+    + 知道系统目前状态
+    + 第一时间发现异常
+    + 预测系统变坏的可能
+2. 两类监控：
+    + 实时监控
+    + 统计分析
+
+#### 实时监控
+1. 比较使用的方法就是配置Nginx的check status模块
+
+2. 实时监控应对的几种不同的异常：
+    + Nagios，Zabbix，Cacti端口存活检测：运维常用监控系统，**定时扫描端口是否存活，如果存在异常，会发送警告**
+    + 通过E-mail发送异常信息，如果系统运行时发生异常，发送邮件警告。
+    + Sentry：和E-mail逻辑差不多，但是会收集到一个独立平台。
+
+#### 统计分析
+>>>>>>> Stashed changes
 
 
 
