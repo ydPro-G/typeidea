@@ -1507,6 +1507,32 @@ Nginx是现在Web开发中不可缺少的组件。
 
 
 
+## 升级2.0
+1. 几个变化：
+    + on_delete参数在使用ForeignKey和OneToOneKey时必填，一般使用models.DO_NOTHING,即不做处理。在线上时，一般去掉外键约束，提升性能。
+    + django.core.urlresolvers模块被移到了django.urls中。如果使用reverse函数，需要调整。
+    + request.user.is_authenticated由方法变为属性
+
+2. 新特性：
+    + 更简单的路由语法：通过django.urls.path()声明更语义化的路由：path('articels/<int:year>/',views.year_archive)。这里可以不写正则表达式，复杂路由可以使用re_path
+    + 移动端自适应django自导的admin
+    + admin自带支持autocomplete
+    + runserver支持HTTP1.1
+
+3. 第三方库升级
+
+4. 总结：升级有风险
+
+
+
+
+
+
+
+
+## 最后总结
+
+
 
 
 
