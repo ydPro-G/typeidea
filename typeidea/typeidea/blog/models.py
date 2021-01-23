@@ -116,12 +116,15 @@ class Post(models.Model):
     created_time = models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
     # 存储markdown处理后的内容，允许有空白，但是不允许编辑
     content_html = models.TextField(verbose_name='正文html代码', blank=True, editable=False)
-    
+    is_top = models.BooleanField(default=True,verbose_name="置顶")
+    topped_expired_time = models.DateTimeField(verbose_name="置顶失效时间")
+
+
     # 模型的元数据，指的是“除了字段外的所有内容”，例如排序方式、数据库表名、人类可读的单数或者复数名等等。
     # 配置展示名称为文章，排序规则根据id降序排序
     class Meta:
         verbose_name = verbose_name_plural = '文章'
-        ordering = ['-id'] # 根据id降序排列
+        ordering = ['-is_top', '-id'] # 根据id降序排列
     
     # 在model层定义的接口，返回有标签的状态正常的文章
     @staticmethod
@@ -163,7 +166,11 @@ class Post(models.Model):
         if with_related:
             queryset = queryset.select_related('owner', 'category')
         return queryset
-
+    
+    # 第一种业务
+    @classmethod
+    def get_topped_posts(cls):
+        return cls.objects.filter(status=cls.STATUS_NORMAL, is_top=True)
 
 
 
@@ -195,3 +202,7 @@ class Post(models.Model):
 
 
 
+# 置顶表model
+# class ToppedPosts(models.Model):
+#     title = models.CharField(max_length=255, verbose_name="置顶")
+#     post_id = models.PositiveIntegerField(verbose_name="关联文章ID")

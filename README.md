@@ -1587,6 +1587,64 @@ Nginx是现在Web开发中不可缺少的组件。
 
 
 
+### 实现文章置顶的几种方案
+两种业务：
+1. 第一种业务：独立板块展示置顶内容，放置的文章都是人工置顶的。
+2. 第二种业务：独立内容跟其他内容放到一个板块，排行靠前。
+
+#### 第一种业务:独立板块展示置顶内容，放置的文章都是人工置顶的。
+1. 通过在 blog/models.py Post模型中添加is_top字段和get_topped_posts函数，拿到is_top属性,进而可以在View中获取并将其展示到对应页面位置。
+```PYTHON
+is_top = models.BooleanField(default=False,verbose_name="置顶")
+@classmethod
+def get_topped_posts(cls):
+    return cls.objects.filter(status=cls.STATUS_NORMAL, is_top=True)
+```
+
+2. 增加独立表来存放所有置顶文章。新增is_top字段，并在保存Post数据时处理，当发现保存的数据is_top为True时，将数据放到置顶表中。
+置顶表model👇
+```PYTHON
+class ToppedPosts(models.Model):
+    title = models.Charfield(max_length=255, verbose_name="标题")
+    post_id = models.PositiveIntegerField(verbose_name="关联文章ID")
+```
+这里面冗余了一份title数据，其作用是如果需要有独立的置顶板块，只需要在这个表中查询即可
+
+#### 第二种业务:独立内容跟其他内容放到一个板块，排行靠前。
+1. 在blog中models.py中的Post模型中新增is_top字段，新增topped_expired_time 字段,修改Post模型的Meta属性
+```PYTHON
+is_top = models.BooleanField(default=False,verbose_name="置顶")
+topped_expired_time = models.DateTimeField(verbose_name="置顶失效时间")
+
+class Meta:
+    verbose_name = verbose_name_plural="文章"
+    ordering = ['-is_top', '-id']
+```
+2. topped_expired_time控制置顶过期时间
+    + 用法1：查询所有文章，如果是置顶新闻，判断其是否过期，过期则正常排序
+    + 用法2：用后台定时脚本来处理，每天凌晨对所有置顶内容都进行过期判断，如果发现过期则取消置顶。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br/>
 <br/>
 <br/>
