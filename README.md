@@ -1625,6 +1625,17 @@ class Meta:
     + 用法2：用后台定时脚本来处理，每天凌晨对所有置顶内容都进行过期判断，如果发现过期则取消置顶。
 
 
+### 评论验证码功能
+
+#### 使用django-simple-captcha
+1. 安装pip
+
+2. 配置INSTALLED_APPS 修改base.py ,添加'captcha'
+3. 配置urls.py ----url(r'^captcha/',include('captcha.urls'))
+4. 配置comment/forms.py ---- from captcha.fields import CaptchaField----captcha = CaptchaField()
+
+
+
 
 
 
