@@ -2,6 +2,12 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
+# 验证码
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
+from django.http import JsonResponse
+from django.utils import timezone
+
 from .forms import CommentForm
 # Create your views here.
 
@@ -31,4 +37,29 @@ class CommentView(TemplateView):
             }
             return self.render_to_response(context)
 
+
+# 评论验证码接口
+# class VerifyCaptcha(View):
+#     # 在get函数中生成图片验证码
+#     def get(self, request):
+#         # 存储生成密钥存入id
+#         captcha_id = CaptchaStore.generate_key()
+#         return JsonResponse({
+#             'captcha_id': captcha_id,
+#             'image_src':captcha_image_url(captcha_id),
+#         })
+#     # 在post函数中校验验证码以及清理掉验证通过的验证码
+#     def post(self, request):
+#         captcha_id = request.POST.get('captcha_id')
+#         chaptcha = request.POST.get('captcha', '')
+#         captcha = captcha.lower()
+
+#         try:
+#             CaptchaStore.objects.get(response = captcha, hashkey=captcha_id,
+#             expiration_gt=timezone.now()).delete()
+#             # 存储不存在
+#         except CaptchaStore.DoesNotExist:
+#             return JsonResponse({'msg': '验证码错误'}, status=400)
+        
+#         return JsonResponse({})
 

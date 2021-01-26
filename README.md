@@ -1636,6 +1636,21 @@ class Meta:
 
 
 
+#### 配置Ajax校验验证码
+1. 实现通过接口拿到验证码表示以及验证码，然后判断数据库中是否存在即可。
+
+2. 基于django-simple-captcha改造。
+
+3. 开发接口，在comment/views.py中增加代码
+
+4. 配置bootstrap/templates/comment/block.html  修改form位置的定义
+
+5. 修改urls.py配置
+
+#### 总结
+使用新组件时要尽可能理解其运行原理
+
+
 
 
 
